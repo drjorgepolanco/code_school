@@ -1,0 +1,93 @@
+<html>
+<head>
+  <title>Level 2. Cold Closures Cove</title>
+</head>
+<body>
+
+<script type="text/javascript">
+
+
+// -----------------------------------------------------------------------------
+// 2.2 Tracing a Closure I
+// -----------------------
+
+// Calculate the final value of the variable result and alert the value as a 
+// number using one line of code.
+
+var hidden = mystery();
+var result = hidden(3);
+
+function mystery () {
+  var secret = 6;
+  function mystery2 (multiplier) {
+    multiplier *= 3;
+    return secret * multiplier;
+  }
+  return mystery2;
+};
+
+console.log(54 === result);
+// → true
+
+
+// -----------------------------------------------------------------------------
+// 2.3 Tracing a Closure II
+// ------------------------
+
+// Calculate the final value of the variable result and alert the value as a 
+// number using one line of code.
+
+var hidden = mystery(4);
+var result = hidden(2);
+
+function mystery (input) {
+  var secret = 5;
+  function mystery2 (multiplier) {
+    multiplier *= input;
+    return secret * multiplier;
+  }
+  return mystery2;
+};
+
+console.log(40 === result);
+// → true
+
+
+// -----------------------------------------------------------------------------
+// 2.4 Tracing a Closure III
+// -------------------------
+
+// Calculate the final value of the variable result and alert the value as a 
+// number using one line of code.
+
+var hidden = mystery(3);                 // hidden => mystery2
+var jumble = mystery3(hidden);           // jumble => mystery3(mystery2)
+var result = jumble(2);                  //  
+
+function mystery (input) {               // function mystery (3) {
+  var secret = 4;                        //   var secret = 4;
+  input += 2;                            //   input = 3 += 2 = 5
+  function mystery2 (multiplier) {       //   function mystery2 (6) {
+    multiplier *= input;                 //     6 *= 5 = 30
+    return secret * multiplier;          //     return 4 * 30
+  }                                      //   }
+  return mystery2;                       //   return 120
+}                                        // }  
+function mystery3 (param) {              // function mystery3 (120) {
+  function mystery4 (bonus) {            //   function mystery4 (2) {
+    return param(6) + bonus;             //     return 120 + 2
+  }                                      //   }
+  return mystery4;                       //   return 122
+}                                        // }
+
+// hidden becomes mystery2 as a result of what mystery is returning
+// jumble tells us to pass mystery2 as a parameter of mystery3
+// the mystery3 return mystery4, so jumble becomes mystery4
+// bonus becomes 2 and multiplier becomes 6, because param(6) becomes mystery2
+// which is the argument to mystery3
+// mystery2 returns 120 which becomes params + 2 (bonus) = 122
+
+
+</script>
+</body>
+</html>
