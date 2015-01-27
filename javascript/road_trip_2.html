@@ -55,14 +55,14 @@ while (gotName == false) {
 // 'Generator #2 is now off, removing 62 MW, for a total of 0 MW!'
 
 function changePowerTotal(totalPower, genId, genStatus, currentGenPower) {
-	if (genStatus == 'on') {
-		totalPower += currentGenPower;
-		alert('Generator #' + genId + " is now " + genStatus + ", adding " + currentGenPower + " MW, for a total of " + totalPower + " MW!");
-	} else {
-		totalPower -= currentGenPower;
-		alert('Generator #' + genId + " is now " + genStatus + ", removing " + currentGenPower + " MW, for a total of " + totalPower + " MW!");
-	}
-	return totalPower;
+  if (genStatus == 'on') {
+    totalPower += currentGenPower;
+    alert('Generator #' + genId + " is now " + genStatus + ", adding " + currentGenPower + " MW, for a total of " + totalPower + " MW!");
+  } else {
+    totalPower -= currentGenPower;
+    alert('Generator #' + genId + " is now " + genStatus + ", removing " + currentGenPower + " MW, for a total of " + totalPower + " MW!");
+  }
+  return totalPower;
 };
   
 
