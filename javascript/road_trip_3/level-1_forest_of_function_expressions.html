@@ -67,10 +67,118 @@ modifiedNames.map(function (name) {
 // 3. Returns 9 less than the result of an input squared.
 // 4. Returns the remainder after an input is divided by 4.
   
-var puzzlers = [function one (input) { return 8 < (input * 3); },
-                function two (input) { return Math.pow((input + 2), 3); },
-                function tri (input) { return 9 < Math.pow(input, 2); },
-                function fur (input) { return (input % 4); } ];
+var puzzlers = [function (input) { return 8 < (input * 3); },
+                function (input) { return Math.pow((input + 2), 3); },
+                function (input) { return 9 < Math.pow(input, 2); },
+                function (input) { return (input % 4); } ];
+
+
+// -----------------------------------------------------------------------------
+// 1.11 Choose Their Own Adventure
+// -------------------------------
+
+// Ash Adventures has three different “adventures” to choose from. First, the 
+// customer is prompted for a number at the terminal, which is passed to a 
+// function called adventureSelector. This function should create a boarding 
+// message function based on the number the user gives, and then return that 
+// function to be stored in a variable so that it can be used later.
+
+// The devs at Ash Adventures have asked you to build out this function, and to 
+// only return function expressions with no extra variables created. The different 
+// messages that should be alerted in those returned functions are as follows:
+
+// If the user selects 1:
+//   You've selected the Vines of Doom!
+//   Hope you have a swingin' time.
+
+// If the user selects 2:
+//   Looks like you want the Lake of Despair!
+//   Watch out for crocs. And I ain't talkin' about shoes.
+
+// If the user selects 3:
+//   The Caves of Catastrophe, really?
+//   Alright, well....nice knowing you.
+
+// Assume the user’s choice has already been stored as 1, 2, or 3 (and only these), 
+// and is passed in as parameter userChoice. Make sure that you return all message 
+// functions as expressions, instead of stored in variables.
+
+function adventureSelector ( userChoice ) {
+  if (userChoice == 1) {
+    return function () {
+    alert("You've selected the Vines of Doom!\n" + 
+                    "Hope you have a swingin' time.");
+    };
+  }
+  else if (userChoice == 2) {
+    return function () {
+    alert("Looks like you want the Lake of Despair!\n" + 
+                    "Watch out for crocs. And I ain't talkin' about shoes.");
+    };
+  }
+  else if (userChoice == 3) {
+    return function () {
+    alert("The Caves of Catastrophe, really?\n" + 
+                    "Alright, well....nice knowing you.");
+    };
+  }
+}
+
+
+// -----------------------------------------------------------------------------
+// 1.12 Immediately-Invoked Adventure!
+// -----------------------------------
+
+// Write one line of code that calls adventureSelector when the user selects 
+// choice 3, and that automatically invokes the function that gets returned. 
+// Here’s the function for your reference:
+
+adventureSelector(3());
+
+
+// -----------------------------------------------------------------------------
+// 1.13 Queue Builder
+// ------------------
+
+// Now the people at Poplar Puzzles would like you to treat an array of functions
+// like a Queue, passing the result of each function into the next until the Queue
+// is empty. They’ve sent you the new queue of functions, and a “simple directive”:
+/*
+  In a variable called applyAndEmpty, build and store a function that takes in a 
+  single number and any Queue of functions as inputs and then applies the Queue’s 
+  functions in order to the input number, where the results of each function become 
+  the next function’s input. Additionally, the queue should be empty following your 
+  application. Lastly, because we are just that freaking awesome, any loops you use 
+  must only be for-loops. MWAHAHA. Then call your new function using the number 2 
+  and the provided puzzlers queue as initial inputs, and alert the result.
+  - PuZzLe MaSTeRs
+*/
+
+var puzzlers = [
+  function ( a ) { return 8*a - 10; },
+  function ( a ) { return (a-3) * (a-3) * (a-3); },
+  function ( a ) { return a * a + 4; },
+  function ( a ) { return a % 5; }
+];
+
+var start = 2;
+
+var applyAndEmpty = function (number, array) {
+  var result = 0;
+  var len = array.length;
+  for (var i = 0; i < len; i += 1) {
+    var current = array.shift();
+    result = current(number);
+  }
+  return result;
+};
+
+alert(applyAndEmpty);
+
+
+
+
+
 
 
 </script>
