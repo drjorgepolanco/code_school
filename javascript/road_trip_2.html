@@ -1,6 +1,6 @@
 <html>
 <head>
-  <title>Level 4. The Desert of Declarations</title>
+  <title>Road Trip 2</title>
 </head>
 <body>
 
@@ -8,6 +8,26 @@
 
 
 // -----------------------------------------------------------------------------
+// Level 3. Built-in's Bluff
+// -------------------------
+
+// A confirmation Loop
+
+var gotName = false;
+while (gotName == false) {
+  var userName = prompt("Yo passenger! What's your name?");
+
+  if (confirm("Are you sure your name is " + userName + "?")) {
+    alert("'Sup " + userName + "!");
+    gotName = true;
+  }
+};
+
+
+
+// -----------------------------------------------------------------------------
+// Level 4. The Desert of Declarations
+// -----------------------------------
 // 4.8 Problem Solving with Functions II
 // -------------------------------------
 
@@ -44,9 +64,6 @@ function changePowerTotal(totalPower, genId, genStatus, currentGenPower) {
 	}
 	return totalPower;
 };
-
-
-
   
 
 </script>
