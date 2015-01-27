@@ -88,6 +88,84 @@ function mystery3 (param) {              // function mystery3 (120) {
 // mystery2 returns 120 which becomes params + 2 (bonus) = 122
 
 
+// -----------------------------------------------------------------------------
+// 2.5 Building a Closure I
+// ------------------------
+
+// We’ve started a function called warningMaker with a parameter called obstacle. 
+// Within this function, build and return another function that alerts a specific 
+// message based on the specific troubling object encountered. The format of the 
+// message should be as follows:
+
+//   "Beware! There have been <obstacle> sightings in the Cove today!"
+
+function warningMaker (obstacle) {
+  return function () { 
+   console.log("Beware! There have been " + obstacle + " sightings in the cove today!");
+  };
+}
+ 
+
+// -----------------------------------------------------------------------------
+// 2.6 Using a Closure I
+// ---------------------
+
+// Using your new warning maker, build a warning message function for the obstacle
+// iceberg and store it in a variable called icebergAlert. Then call that function.
+
+var icebergAlert = warningMaker('iceberg');
+icebergAlert();
+
+
+// -----------------------------------------------------------------------------
+// 2.7 Building a Closure II
+// -------------------------
+
+// Modify your warningMaker in order to announce:
+
+// 1. The amount of obstacles
+// 2. The specific location of the obstacle found.
+
+// In other words, we want to be able to pass a specific number and a specific 
+// location to any warning message function already made, and have those values 
+// become part of the message for that obstacle.
+
+// The format of the new message follows, and the new parameters you’ll need to make 
+// should take the names of the bracketed placeholders you see here:
+
+//   Beware! There have been <obstacle> sightings in the Cove today!
+//   <number> <obstacle>(s) spotted at the <location>! 
+
+function warningMaker (obstacle) {
+  return function (amount, location) {
+    alert("Beware! There have been " + obstacle + " sightings in the Cove today!\n" +
+          amount + " " + obstacle + "(s) spotted at the " + location + "!");
+  };
+}
+
+
+// -----------------------------------------------------------------------------
+// 2.8 Using a Closure II
+// ----------------------
+
+// I’ve got 6 killer penguins on the loose near the “Ice Caves”, and 1 snow 
+// yeti rampaging across the “Blizzard Beach”. 
+
+var killerPenguinAlert = warningMaker("killer penguin");
+var polarBearAlert = warningMaker("polar bear");
+var icebergAlert = warningMaker("iceberg");
+var flashBlizzardAlert = warningMaker("flash blizzard");
+var snowYetiAlert = warningMaker("snow yeti");
+
+killerPenguinAlert(6, 'Ice Caves');
+snowYetiAlert(1, 'Blizzard Beach');
+
+
+
+
+
+
+
 </script>
 </body>
 </html>
