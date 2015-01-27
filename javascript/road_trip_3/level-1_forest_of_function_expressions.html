@@ -1,0 +1,78 @@
+<html>
+<head>
+  <title>Level 1. Forest of Function Expressions</title>
+</head>
+<body>
+
+<script type="text/javascript">
+
+
+// -----------------------------------------------------------------------------
+// 1.7 Using map() with arrays
+// ---------------------------
+
+// 1. Write an anonymous function that will return a string with the first and last 
+//    name of a single passenger. For example, your goal would be to change from 
+//    ["Thomas", "Meeks"] to "Thomas Meeks". Notice that an array goes in to the 
+//    function you’re building, but a string gets returned.
+// 2. Then use the map function on the passengers array, and pass in your anonymous 
+//    function as a parameter.
+// 3. Store the results to a new variable named modifiedNames.
+
+var passengers = [ ["Thomas", "Meeks"],
+                   ["Gregg", "Pollack"],
+                   ["Christine", "Wong"],
+                   ["Dan", "McGaw"] ];
+
+var modifiedNames = passengers.map(function (passenger) {
+  // return passenger[0] + " " + passenger[1];   <-- Desired CodeSchool response
+  return passenger.join(" ");
+});
+console.log(modifiedNames);
+// → ["Thomas Meeks", "Gregg Pollack", "Christine Wong", "Dan McGaw"]
+
+// -----------------------------------------------------------------------------
+// 1.8 Using map() with Arrays II
+// ------------------------------
+
+// The passengers have arrived at Maple Mountain! Take the modifiedNames array 
+// that you produced in the last challenge, and map a new anonymous function on it.
+
+// The function should alert the following message to the screen for each passenger 
+// in turn:
+
+// Yo, <name>!
+
+var modifiedNames = [ "Thomas Meeks",
+                      "Gregg Pollack",
+                      "Christine Wong",
+                      "Dan McGaw" ];
+
+modifiedNames.map(function (name) {
+  alert('Yo, ' + name + '!');
+});
+
+
+// -----------------------------------------------------------------------------
+// 1.9 Expressions Inside Arrays
+// -----------------------------
+
+// The folks over at Poplar Puzzlers need an array of functions for one of their 
+// puzzles. They’ve requested your help in making the array, which they would like 
+// to be called puzzlers. The cells of the array should each contain a function, 
+// and these functions are listed here in order:
+
+// 1. Returns 8 less than 3 times an input.
+// 2. Returns the cube of the sum of an input and 2.
+// 3. Returns 9 less than the result of an input squared.
+// 4. Returns the remainder after an input is divided by 4.
+  
+var puzzlers = [function one (input) { return 8 < (input * 3); },
+                function two (input) { return Math.pow((input + 2), 3); },
+                function tri (input) { return 9 < Math.pow(input, 2); },
+                function fur (input) { return (input % 4); } ];
+
+
+</script>
+</body>
+</html>
