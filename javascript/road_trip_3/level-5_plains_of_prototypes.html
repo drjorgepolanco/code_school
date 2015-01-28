@@ -79,7 +79,128 @@ String.prototype.countAll = function (letter) {
 };
 
 
+// -----------------------------------------------------------------------------
+// 5.2 Prototypes I
+// ----------------
 
+// Add a function, called countCattle, to the Array prototype that will allow any 
+// array list of Cows to access precisely how many bulls, cows, or calfs are present 
+// in the array. The function should accept a parameter and return a number value.
+
+var canyonCows = [
+ {name: "Bessie",  type: "cow",  hadCalf: "Burt"},
+ {name: "Donald",  type: "bull", hadCalf: null},
+ {name: "Esther",  type: "calf", hadCalf: null},
+ {name: "Burt",    type: "calf", hadCalf: null},
+ {name: "Sarah",   type: "cow",  hadCalf: "Esther"},
+ {name: "Samson",  type: "bull", hadCalf: null},
+ {name: "Delilah", type: "cow",  hadCalf: null}
+];
+
+Array.prototype.countCattle = function (kind) {
+  var numCount = 0;
+  for (var i = 0; i < this.length; i += 1) {
+    if (this[i].type == kind) {
+      numCount += 1;
+    }
+  }
+  return numCount;
+};
+
+console.log(canyonCows.countCattle("calf"));
+
+
+// -----------------------------------------------------------------------------
+// 5.3 Prototypes II
+// -----------------
+
+// Using the function you added to the prototype, build ONE line of code that 
+// alerts the sum of:
+
+//   The calves in the array canyonCows.
+//   The bulls in the array valleyCows.
+//   The cows in the array forestCows.
+
+var canyonCows = [
+  {name: "Bessie",  type: "cow",  hadCalf: "Burt"},
+  {name: "Donald",  type: "bull", hadCalf: null},
+  {name: "Esther",  type: "calf", hadCalf: null},
+  {name: "Burt",    type: "calf", hadCalf: null},
+  {name: "Sarah",   type: "cow",  hadCalf: "Esther"},
+  {name: "Samson",  type: "bull", hadCalf: null},
+  {name: "Delilah", type: "cow",  hadCalf: null}
+];
+
+var valleyCows = [
+  {name: "Danielle", type: "cow", hadCalf: null},
+  {name: "Brittany", type: "cow", hadCalf: "Christina"},
+  {name: "Jordan", type: "bull", hadCalf: null},
+  {name: "Trevor", type: "bull", hadCalf: null},
+  {name: "Christina", type: "calf", hadCalf: null},
+  {name: "Lucas", type: "bull", hadCalf: null}
+];
+
+var forestCows = [
+  {name: "Legolas", type: "calf", hadCalf: null},
+  {name: "Gimli", type: "bull", hadCalf: null},
+  {name: "Arwen", type: "cow", hadCalf: null},
+  {name: "Galadriel", type: "cow", hadCalf: null},
+  {name: "Eowyn", type: "cow", hadCalf: "Legolas"}
+];
+
+console.log("The currently are " + canyonCows.countCattle('calf') + " calves from the Canyon, " +
+            valleyCows.countCattle('bull') + " bulls from the Valley, and " +
+            forestCows.countCattle('cow') + " cows from the Forest.");
+
+
+// -----------------------------------------------------------------------------
+// 5.4 Prototypes III
+// ------------------
+
+// Build two functions in order, explained here:
+
+// A function called noCalvesYet, which will be added to the Object prototype, 
+// and will return true for an object if the object is a cow with no calves…and 
+// false otherwise.
+
+// A function called countForBreeding, which will be added to the Array prototype, 
+// and will examine an array’s list of cattle objects, counting all cows that are 
+// not moms. To do this, you should employ the function in criteria number (1), as 
+// well as use a counter variable called numToBreed. Ultimately, this function 
+// should return numToBreed representing precisely how many non-mother cows are 
+// available within any array.
+
+var forestCows = [
+  {name: "Legolas", type: "calf", hadCalf: null},
+  {name: "Gimli", type: "bull", hadCalf: null},
+  {name: "Arwen", type: "cow", hadCalf: null},
+  {name: "Galadriel", type: "cow", hadCalf: null},
+  {name: "Eowyn", type: "cow", hadCalf: "Legolas"}
+];
+
+Object.prototype.noCalvesYet = function () {
+  if (this['type'] == 'cow' && this['hadCalf'] == null) {
+    return true;
+  }
+  return false;
+};
+
+Array.prototype.countForBreeding = function () {
+  var numToBreed = 0;
+  for (var x = 0; x < this.length; x += 1) {
+    if (this[x].noCalvesYet()) {
+      numToBreed += 1;
+    }
+  }
+  return numToBreed;
+};
+
+console.log(forestCows.countForBreeding());
+
+
+// -----------------------------------------------------------------------------
+// 5.5 Prototypes IV
+// -----------------
 
 </script>
 </body>
