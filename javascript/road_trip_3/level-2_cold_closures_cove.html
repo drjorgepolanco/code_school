@@ -80,6 +80,9 @@ function mystery3 (param) {              // function mystery3 (120) {
   return mystery4;                       //   return 122
 }                                        // }
 
+console.log(122 === result);
+// → true
+
 // hidden becomes mystery2 as a result of what mystery is returning
 // jumble tells us to pass mystery2 as a parameter of mystery3
 // the mystery3 return mystery4, so jumble becomes mystery4
@@ -115,6 +118,7 @@ function warningMaker (obstacle) {
 
 var icebergAlert = warningMaker('iceberg');
 icebergAlert();
+// → Beware! There have been iceberg sightings in the cove today!
 
 
 // -----------------------------------------------------------------------------
@@ -138,7 +142,7 @@ icebergAlert();
 
 function warningMaker (obstacle) {
   return function (amount, location) {
-    alert("Beware! There have been " + obstacle + " sightings in the Cove today!\n" +
+    console.log("Beware! There have been " + obstacle + " sightings in the Cove today!\n" +
           amount + " " + obstacle + "(s) spotted at the " + location + "!");
   };
 }
@@ -158,13 +162,104 @@ var flashBlizzardAlert = warningMaker("flash blizzard");
 var snowYetiAlert = warningMaker("snow yeti");
 
 killerPenguinAlert(6, 'Ice Caves');
+// → Beware! There have been killer penguin sightings in the Cove today!
+//   6 killer penguin(s) spotted at the Ice Caves!
+
 snowYetiAlert(1, 'Blizzard Beach');
+// → Beware! There have been snow yeti sightings in the Cove today!
+//   1 snow yeti(s) spotted at the Blizzard Beach!
 
 
+// -----------------------------------------------------------------------------
+// 2.10 Changing a Bound Value I
+// -----------------------------
+
+// Modify the warning functions to internally count the number of times a particular 
+// obstacle has been encountered, and then add that number of alerts to the message. 
+
+// The format of the new message should match the following, and you can use 'count' 
+// as the tracker in your new build:
+
+//   Beware! There have been <obstacle> sightings in the Cove today!
+//   <number> <obstacle>(s) spotted at the <location>!
+//   This is Alert #<count> today for <obstacle> danger.
+
+function warningMaker (obstacle) {
+  var count = 0;
+  return function (amount, location) {
+    count += 1;
+    console.log("Beware! There have been " + obstacle + " sightings in the Cove today!\n" +
+          amount + " " + obstacle + "(s) spotted at the " + location + "!" + "\n" +
+          "This is Alert #" + count + " today for " + obstacle + " danger.");
+  };
+}
 
 
+// -----------------------------------------------------------------------------
+// 2.11 Highway to the Danger Zone
+// -------------------------------
+
+// Find a way to store each new location in an array called 'zones' and then report
+// the entire list of current danger zones in every warning that goes out for that
+// particular obstacle. Your new alert message should be as follows.
+
+//   Beware! There have been <obstacle> sightings in the Cove today!
+//   <number> <obstacle>(s) spotted at the <location>!
+//   This is Alert #<count> today for <obstacle> danger.
+//   Current danger zones are:
+//   <zone1>
+//   <zone2>
+//   <zone3>
+
+function warningMaker (obstacle) {
+  var count = 0;
+  var zones = [];
+  return function (amount, location) {
+    count += 1;
+    zones.push(location);
+    var zone = '';
+    for (var i = 0; i < zones.length; i += 1) {
+      zone = zone + "\n" + zones[i];
+    }
+    console.log("Beware! There have been " + obstacle + " sightings in the Cove today!\n" +
+                  amount + " " + obstacle + "(s) spotted at the " + location + "!\n" +
+                  "This is Alert #" + count + " today for " + obstacle + " danger.\n" +
+                  "Current danger zones are:" + zone);
+  };
+}
 
 
+// -----------------------------------------------------------------------------
+// 2.12 Just Keep Track of it All
+// ------------------------------
+
+// Find a way to store both the location and the number of obstacles, printing 
+// both out in your message in the following format:
+
+//   Beware! There have been <obstacle> sightings in the Cove today!
+//   <number> <obstacle>(s) spotted at the <location>!
+//   This is Alert #<count> today for <obstacle> danger. 
+//   Current danger zones are:
+//   <zone1> (<number1>)
+//   <zone2> (<number2>)
+//   <zone3> (<number3>)
+
+function warningMaker (obstacle){
+  var count = 0;
+  var zones = [];
+  return function (amount, location) {
+    count += 1;
+    zones.push([location, amount]);
+    var list = "";
+    for(var i = 0; i < zones.length; i += 1){
+      list += "\n" + zones[i][0] + " (" + zones[i][1] + ")";  
+    }
+    alert("Beware! There have been " + obstacle + " sightings in the Cove today!\n" +
+          amount + " " + obstacle + "(s) spotted at the " + location + "!\n" + 
+          "This is Alert #" + count + " today for " + obstacle + " danger.\n" +
+          "Current danger zones are: " + list);
+  };
+}
 
 </script>
 </body>
