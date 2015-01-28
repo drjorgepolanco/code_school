@@ -1,0 +1,117 @@
+<html>
+<head>
+  <title>Level 4. Ocean of Objects</title>
+</head>
+<body>
+
+<script type="text/javascript">
+
+
+// -----------------------------------------------------------------------------
+// 4.8 To the Lighthouse, Quick!
+// -----------------------------
+
+// Build a declared function that adds the following three rangers, in order and 
+// as complete objects, to the Lighthouse Rock object itself:
+
+//   name: “Nick Walsh”, skillz: “magnification burn”, station: 2
+//   name: “Drew Barontini”, skillz: “uppercut launch”, station: 3
+//   name: “Christine Wong”, skillz: “bomb defusing”, station: 1
+
+// Each added ranger object should become its own property within lighthouseRock, 
+// specifically ranger1, ranger2, and ranger3. Additionally, as you add a ranger, 
+// increment the number of rangers present using the existing numRangers property.
+
+// In order to add your newly created objects to the Lighthouse, your function 
+// should accept a location parameter, which will represent that object. To help 
+// us check your function, order your function parameters as location, name, 
+// skillz, and station.
+
+// Name your new function addRanger. Lastly, when the function has been built, 
+// call it three times, with the appropriate data each time, to effectively add 
+// all three rangers to lighthouseRock.
+
+var superBlinders = [ ["Firestorm", 4000], 
+                      ["Solar Death Ray", 6000], 
+                      ["Supernova", 12000] ];
+var lighthouseRock = {
+  gateClosed: true,
+  weaponBulbs: superBlinders,
+  capacity: 30,
+  secretPassageTo: "Underwater Outpost",
+  numRangers: 0
+};
+
+function addRanger(location, name, skillz, station) {
+  lighthouseRock.numRangers += 1;
+  lighthouseRock["ranger" + lighthouseRock.numRangers] = { 
+    name: name, 
+    skillz: skillz, 
+    station: station 
+  };
+}
+
+addRanger(lighthouseRock, 'Nick Walsh', 'magnification burn', 2);
+addRanger(lighthouseRock, 'Drew Barontini', 'uppercut launch', 3);
+addRanger(lighthouseRock, 'Christine Wong', 'bomb defusing', 1);
+
+
+// -----------------------------------------------------------------------------
+// 4.9 Man your Bulb Stations!
+// ---------------------------
+
+// Build a function that takes in a location object, examines every ranger’s 
+// station number, and retrieves the name of the super-blinder to which they’re 
+// assigned from the array of the super-blinders. When the right super-blinder 
+// is found for a ranger-dev, alert it in a message to the ranger in the following 
+// format:
+
+//   Avast, me hearties!
+//   There be Pirates nearby! Stations!
+//   <name>, man the <superblinder>!
+//   <name>, man the <superblinder>!
+//   <name>, man the <superblinder>!
+
+// Call your function dontPanic, and when it is completed, call it on the 
+// lighthouseRock variable which is provided for you, complete with new 
+// ranger-dev objects as if they had been there from the get-go.
+
+var superBlinders = [ ["Firestorm", 4000], 
+                      ["Solar Death Ray", 6000], 
+                      ["Supernova", 12000] ];
+var lighthouseRock = {
+  gateClosed: true,
+  weaponBulbs: superBlinders,
+  capacity: 30,
+  secretPassageTo: "Underwater Outpost",
+  numRangers: 3,
+  ranger1: {name: "Nick Walsh", skillz: "magnification burn", station: 2},
+  ranger2: {name: "Drew Barontini", skillz: "uppercut launch", station: 3},
+  ranger3: {name: "Christine Wong", skillz: "bomb defusing", station: 1}
+};
+
+function dontPanic(location) {
+  var list = "";
+  for (var x = 1; x <= location.numRangers; x += 1) {
+    var name = location['ranger' + x].name
+    var station = location['ranger' + x].station;
+    var superblinder = superBlinders[station - 1][0];
+    list += name + ", man the " + superblinder + "!\n";
+  }
+  
+  console.log("Avast, me hearties!\n" +
+              "There be Pirates nearby! Stations!\n" +
+              list);
+}
+dontPanic(lighthouseRock);
+
+// → Avast, me hearties!
+//   There be Pirates nearby! Stations!
+//   Nick Walsh, man the Solar Death Ray!
+//   Drew Barontini, man the Supernova!
+//   Christine Wong, man the Firestorm!
+
+
+</script>
+</body>
+</html>
