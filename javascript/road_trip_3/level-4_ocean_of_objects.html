@@ -43,8 +43,8 @@ var lighthouseRock = {
 };
 
 function addRanger(location, name, skillz, station) {
-  lighthouseRock.numRangers += 1;
-  lighthouseRock["ranger" + lighthouseRock.numRangers] = { 
+  location.numRangers += 1;
+  location["ranger" + location.numRangers] = { 
     name: name, 
     skillz: skillz, 
     station: station 
@@ -111,6 +111,154 @@ dontPanic(lighthouseRock);
 //   Drew Barontini, man the Supernova!
 //   Christine Wong, man the Firestorm!
 
+
+// -----------------------------------------------------------------------------
+// 4.11 Functions as Properties I
+// ------------------------------
+
+// Take the addRanger function that was designed for lighthouseRock, refactor it, 
+// and add it directly within the lighthouseRock object. The property name that 
+// you use in lighthouseRock should also be addRanger. 
+
+var superBlinders = [ ["Firestorm", 4000], ["Solar Death Ray", 6000], ["Supernova", 12000] ];
+var lighthouseRock = {
+  gateClosed: true,
+  weaponBulbs: superBlinders,
+  capacity: 30,
+  secretPassageTo: "Underwater Outpost",
+  numRangers: 3,
+  ranger1: {name: "Nick Walsh", skillz: "magnification burn", station: 2},
+  ranger2: {name: "Drew Barontini", skillz: "uppercut launch", station: 3},
+  ranger3: {name: "Christine Wong", skillz: "bomb defusing", station: 1}
+};
+
+
+lighthouseRock.addRanger = function (name, skillz, station) {
+  this.numRangers += 1;
+  this['ranger' + this.numRangers] = {
+    name: name,
+    skillz: skillz,
+    station: station
+  };
+}
+
+// -----------------------------------------------------------------------------
+// 4.12 Calling Function Properties I
+// ----------------------------------
+
+// Add a new ranger to the lighthouseRock object by calling your new function 
+// property and using the following information:
+
+//   name: Jordan Wade
+//   skillz: dual-wield hand crossbow
+//   station: 4
+
+lighthouseRock.addRanger('Jordan Wade', 'dual-wield hand crossbow', 4);
+
+
+// -----------------------------------------------------------------------------
+// 4.13 Functions as Properties II
+// -------------------------------
+
+// Build a new function property for lighthouseRock that adds a new super-blinder 
+// bulb to their list, complete with name and insane wattage. This function 
+// property, however, needs to be added on the fly.
+
+// Name your new property addBulb, and have it take parameters name and wattage. 
+// Remember, also, that you will be adding this property to the lighthouseRock 
+// object, which is provided for you in the editor with some slight reorganization.
+
+// The current super-blinder array is below. Be careful to notice how the data is 
+// arranged and indexed. Add any new bulb created to the back of the array. 
+// Additionally, you’ll need to add the bulb by calling the lighthouseRock 
+// object’s property that REFERS to the array, rather than the external array.
+
+//   var superBlinders = [ ["Firestorm", 4000], 
+//                         ["Solar Death Ray", 6000], 
+//                         ["Supernova", 12000] ];
+
+lighthouseRock.addBulb = function (name, wattage) {
+  this.weaponBulbs.push([name, wattage]);
+};
+
+
+// -----------------------------------------------------------------------------
+// 4.14 Calling Function Properties II
+// -----------------------------------
+
+// Using your new addBulb property, add the following bulbs to the list of 
+// super-blinders available at Lighthouse Rock.
+
+//   Brand: “Blasterbright”
+//   Wattage: 5000
+
+//   Brand: “Sight Slayer”
+//   Wattage: 1800
+
+//   Brand: “Burner of Souls”
+//   Wattage: 7500
+
+lighthouseRock.addBulb('Blasterbright',   5000);
+lighthouseRock.addBulb('Sight Slayer',    1800);
+lighthouseRock.addBulb('Burner of Souls', 7500);
+
+
+// -----------------------------------------------------------------------------
+// 4.15 Relieved of Duty!
+// ----------------------
+
+// Build a function, called relieveDuty(), that accepts a vehicle object and a 
+// day of the week as parameters. Name the vehicle object 'vehicle' and the day 
+// of the week 'day'. This function should take care of all of the following 
+// requirements:
+
+// 1. Search only over all of the ranger objects contained within the vehicle 
+//    object, creatively using the existing numRangers property to do so. No 
+//    need to look at the other properties in the vehicle.
+
+// 2. All existing ranger objects will need to be sorted into arrays, offDuty 
+//    and onDuty. The offDuty array will be returned from the function. The 
+//    onDuty array will contain staying rangers that need to be renumbered.
+
+// 3. All onDuty rangers will be re-added to the vehicle object, with their 
+//    property names rebuilt in the order that rangers were added to onDuty. 
+//    Ranger numbers should start with 1. Remember to remove the existing property.
+
+// 4. At the end of these operations, remember to adjust the numRangers property 
+//    to contain the new, smaller amount of rangers.
+
+// After building the function, call it on vehicle3 and "Friday". The resulting 
+// array of objects should be stored in a variable called offToday.
+
+var vehicle3 = {
+  type: "Submarine", capacity: 8, storedAt: "Underwater Outpost",
+  ranger1: { name: "Gregg Pollack", skillz: "Lasering", dayOff: "Friday"},
+  ranger2: { name: "Bijan Boustani", skillz: "Roundhouse Kicks", dayOff: "Tuesday"},
+  ranger3: { name: "Ashley Smith", skillz: "Torpedoing", dayOff: "Friday"},
+  ranger4: { name: "Mark Krupinski", skillz: "Sniping", dayOff: "Wednesday"},
+  numRangers: 4
+};
+
+function relieveDuty (vehicle, day){
+  var offDuty = [];
+  var onDuty = [];
+  for(var i = 1; i <= vehicle["numRangers"]; i += 1) {
+    var soldier = vehicle['ranger' + i];
+    if(soldier.dayOff == day){
+      offDuty.push(soldier);
+    }
+    else{
+      onDuty.push(soldier);
+    }
+    delete soldier;
+  }
+  vehicle.numRangers -= offDuty.length;
+  for(var x = 1; x <= vehicle["numRangers"]; x += 1){
+    vehicle["ranger" + x] = onDuty.shift();
+  }
+  return offDuty;
+}
+var offToday = relieveDuty(vehicle3, "Friday");
 
 </script>
 </body>
