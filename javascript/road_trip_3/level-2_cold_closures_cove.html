@@ -254,12 +254,190 @@ function warningMaker (obstacle){
     for(var i = 0; i < zones.length; i += 1){
       list += "\n" + zones[i][0] + " (" + zones[i][1] + ")";  
     }
-    alert("Beware! There have been " + obstacle + " sightings in the Cove today!\n" +
-          amount + " " + obstacle + "(s) spotted at the " + location + "!\n" + 
-          "This is Alert #" + count + " today for " + obstacle + " danger.\n" +
-          "Current danger zones are: " + list);
+    console.log("Beware! There have been " + obstacle + " sightings in the Cove today!\n" +
+                amount + " " + obstacle + "(s) spotted at the " + location + "!\n" + 
+                "This is Alert #" + count + " today for " + obstacle + " danger.\n" +
+                "Current danger zones are: " + list);
   };
 }
+
+
+// -----------------------------------------------------------------------------
+// 2.13 Loops with Closures: A Cautionary Tale
+// -------------------------------------------
+
+// COMMON PITFALL IN CLOSURES
+
+// WRONG WAY
+function assignTorpedo (name, passengerArray) {
+  var torpedoAssignment;
+  for (var i = 0; i < passengerArray.length; i += 1) {
+    if (passengerArray[i] == name) {
+      torpedoAssignment = function () {
+        console.log('Ahoy, ' + name + '!\n' + 'Man your post at Torpedo #' + (i + 1) + '!');
+      };
+    }
+  }
+  return torpedoAssignment;
+}
+
+var subPassengers = ['Luke', 'Leia', 'Han', 'Chewie', 'Yoda', 'R2-D2', 'C-3P0', 'Boba'];
+var giveAssignment = assignTorpedo('Chewie', subPassengers);
+giveAssignment();
+// → Ahoy, Chewie!
+//   Man your post at Torpedo #9! <-- WRONG! Should be #4!!
+
+// CLOSURES BIND VALUES AT THEIR VERY LAST OPPORTUNITY
+// THE LOOP KEPT LOOPING UNTIL THE END OF THE ARRAY WHICH IS 8, + 1 = 9
+
+
+// OPTION 1
+function assignTorpedo (name, passengerArray) {
+  for (var i = 0; i < passengerArray.length; i += 1) {
+    if (passengerArray[i] == name) {
+      return function () {
+        console.log('Ahoy, ' + name + '!\n' + 'Man your post at Torpedo #' + 
+                   (i + 1) + '!');
+      };
+    }
+  }
+}
+// → Ahoy, Chewie!
+//   Man your post at Torpedo #4! <-- RIGHT!
+
+
+// OPTION 2
+function makeTorpedoAssigner (passengerArray) {
+  return function (name) {
+    for (var i = 0; i < passengerArray.length; i += 1) {
+      if (passengerArray[i] == name) {
+        console.log('Ahoy, ' + name + '!\n' + 'Man your post at Torpedo #' + 
+                   (i + 1) + '!');
+      }
+    }
+  };
+}
+
+var getTorpedoFor = makeTorpedoAssigner(subPassengers);
+getTorpedoFor('Chewie');
+// → Ahoy, Chewie!
+//   Man your post at Torpedo #4! <-- RIGHT!
+
+
+// -----------------------------------------------------------------------------
+// 2.14 Final Closed Values I
+// --------------------------
+
+var sharkList = ["Sea Pain", "Great Wheezy", "DJ Chewie", "Lil' Bitey", 
+                 "Finmaster Flex", "Swim Khalifa", "Ice Teeth", 
+                 "The Notorious J.A.W."]
+
+function assignLaser (shark, sharkList) {
+  var stationAssignment;
+  for (var i = 0; i < sharkList.length; i += 1) {
+    if (shark == sharkList[i]) {
+      stationAssignment = function () {
+        console.log('Yo, ' + shark + '!\n' + 'Visit underwater strapping station ' 
+                    + i + ' for your sweet laser.\n' + "'Bout to get real up here.");
+      };
+    }
+  }
+  return stationAssignment;
+}
+
+var assign = assignLaser('DJ Chewie', sharkList);
+assign();
+// → Yo, DJ Chewie!
+//   Visit underwater strapping station 8 for your sweet laser.
+//   'Bout to get real up here.
+
+
+
+// INSTRUCTIONS
+// ------------
+// There’s a traffic jam at the Notorious J.A.W.’s station, and all the sharks are 
+// headed there.
+
+// Apply a fix from the section video that:
+
+// 1. Doesn’t change the position of the built function inside the loop.
+// 2. Eliminates subsequently unnecessary items.
+// 3. Ensures all sharks will make it to the right laser bay.
+
+var sharkList = ["Sea Pain", "Great Wheezy", "DJ Chewie", "Lil' Bitey", 
+                 "Finmaster Flex", "Swim Khalifa", "Ice Teeth", 
+                 "The Notorious J.A.W."]
+
+function provideLaser (array) {
+  return function (name) {
+    for (var i = 0; i < array.length; i += 1) {
+      if (name == array[i]) {
+        console.log('Yo, ' + name + '!\n' + 'Visit underwater strapping station ' 
+                    + (i + 1) + ' for your sweet laser.\n' + "'Bout to get real up here.");
+      }
+    }
+  };
+}
+
+var laserGiven = provideLaser(sharkList);
+laserGiven("Lil' Bitey");
+// → Yo, Lil' Bitey!
+//   Visit underwater strapping station 4 for your sweet laser.
+//   'Bout to get real up here.
+
+// OR
+
+function assignLaser (shark, sharkList) {
+  for (var i = 0; i < sharkList.length; i += 1) {
+    if (shark == sharkList[i]) {
+      return function () {
+        console.log('Yo, ' + shark + '!\n' + 'Visit underwater strapping station ' 
+                    + i + ' for your sweet laser.\n' + "'Bout to get real up here.");
+      };
+    }
+  }
+}
+
+
+// -----------------------------------------------------------------------------
+// 2.15 Final Closed Values II
+// ---------------------------
+
+// The Devs want to use the following function call whenever they need to find 
+// the right target for any shark:
+
+//   var getTargetFor = makeTargetAssigner(  listOfSharks,
+//                                         listOfTargets );
+//   getTargetFor("Ice Teeth");
+
+
+// Here’s an example of the pop-up alert that the devs would like their call to
+// getTargetFor to produce:
+
+//   What up, Ice Teeth!
+//   There've been blue witch sightings in our 'hood!
+//   Time for a swim-by lasering, homie!
+
+// *Note: A shark’s list index matches the index of the target it is supposed to 
+// eliminate.
+
+// YOUR goal is to build out the makeTargetAssigner function with a useful closure, 
+// so that it returns a function that can be used in the manner the devs are asking
+// for. To help us check your work more efficiently, use shark as the parameter for a
+// shark’s name in your closure function. 
+
+function makeTargetAssigner(sharks, targets) {
+  return function (shark) {
+    for (var i = 0; i < sharks.length; i += 1) {
+      if (shark == sharks[i]) {
+        console.log("What up, " + shark + "!\n" +
+                    "There've been " + targets[i] + " sightings in our 'hood!\n" +
+                    "time for a swim-by lasering, homie!"); 
+      }
+    }
+  };
+}
+
 
 </script>
 </body>
