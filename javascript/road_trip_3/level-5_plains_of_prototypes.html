@@ -202,6 +202,57 @@ console.log(forestCows.countForBreeding());
 // 5.5 Prototypes IV
 // -----------------
 
+// Find out how many cows haven’t had calves yet out of the lists you’ll find 
+// below. Calculate this amount and store it in a variable called numPriorityCows. 
+
+// Alert the following message to the screen:
+
+//   "Herd-merger has indicated <number> cows of top breeding priority."
+
+var canyonCows = [
+  {name: "Bessie",  type: "cow",  hadCalf: "Burt"},
+  {name: "Donald",  type: "bull", hadCalf: null},
+  {name: "Esther",  type: "calf", hadCalf: null},
+  {name: "Burt",    type: "calf", hadCalf: null},
+  {name: "Sarah",   type: "cow",  hadCalf: "Esther"},
+  {name: "Samson",  type: "bull", hadCalf: null},
+  {name: "Delilah", type: "cow",  hadCalf: null}
+];
+
+var valleyCows = [
+  {name: "Danielle",  type: "cow",  hadCalf: null},
+  {name: "Brittany",  type: "cow",  hadCalf: "Christina"},
+  {name: "Jordan",    type: "bull", hadCalf: null},
+  {name: "Trevor",    type: "bull", hadCalf: null},
+  {name: "Christina", type: "calf", hadCalf: null},
+  {name: "Lucas",     type: "bull", hadCalf: null}
+];
+
+var forestCows = [
+  {name: "Legolas",   type: "calf", hadCalf: null},
+  {name: "Gimli",     type: "bull", hadCalf: null},
+  {name: "Arwen",     type: "cow",  hadCalf: null},
+  {name: "Galadriel", type: "cow",  hadCalf: null},
+  {name: "Eowyn",     type: "cow",  hadCalf: "Legolas"}
+];
+
+var badlandsCows = [
+  {name: "Voldemort",  type: "bull", hadCalf: null},
+  {name: "Maleficent", type: "cow",  hadCalf: null},
+  {name: "Ursula",     type: "cow",  hadCalf: "Draco"},
+  {name: "Draco",      type: "calf", hadCalf: null},
+  {name: "Joker",      type: "bull", hadCalf: null},
+  {name: "Chucky",     type: "calf", hadCalf: null},
+  {name: "Samara",     type: "cow",  hadCalf: "Chucky"}
+];
+
+var numPriorityCows = canyonCows.countForBreeding() +
+                      valleyCows.countForBreeding() +
+                      forestCows.countForBreeding() +
+                      badlandsCows.countForBreeding();
+alert("Herd-merger has indicated " + numPriorityCows + " cows of top breeding priority."); 
+
+
 </script>
 </body>
 </html>
