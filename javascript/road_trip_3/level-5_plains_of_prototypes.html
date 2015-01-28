@@ -1,0 +1,86 @@
+<html>
+<head>
+  <title>Level 5. Plains of Prototypes</title>
+</head>
+<body>
+
+<script type="text/javascript">
+
+// -----------------------------------------------------------------------------
+// 5.1 Prototypes
+// --------------
+
+// Prototype: is a blueprint object for the project we are trying to create.
+
+// Object Prototype's properties:
+// - valueOf
+// - constructor
+// - toLocaleString
+// - toString
+// - isPrototypeOf
+// - propertyIsEnumerable
+// - hasOwnProperty
+
+// Inheritance: passing down properties. What Object prototype does for our objects
+
+// Array prototype's properties:
+// - length
+// - pop()
+// - push()
+// - shift()
+// - reverse()
+// - sort()
+// - join()
+// - reduce()
+// - slice()
+
+// String prototype's properties:
+// - length
+// - charAt()
+// - trim()
+// - concat()
+// - indexOf()
+// - replace()
+// - toUpperCase()
+// - toLowerCase()
+// - substring()
+
+// Number prototype's properties:
+// - toFixed()
+// - toExponential()
+// - toPrecision()
+
+// Function prototype's properties:
+// - name
+// - bind()
+// - call()
+// - apply()
+
+//  ALL LOWER PROTOTYPES INHERIT FROM OBJECT PROTOTYPE
+// ----------------------------------------------------
+//   |             |              |               |
+// Array         String         Number         Function
+
+
+// -----------------------------------------------------------------------------
+// Addding inheritable properties to prototypes
+// --------------------------------------------
+
+// Find words inside a string...
+
+String.prototype.countAll = function (letter) {
+  var letterCount = 0;
+  for (var i = 0; i < this.length; i += 1) {
+    if (this.charAt(i).toUpperCase() == letter.toUpperCase()) {
+      letterCount += 1;
+    }
+  }
+  return letterCount;
+};
+
+
+
+
+</script>
+</body>
+</html>
