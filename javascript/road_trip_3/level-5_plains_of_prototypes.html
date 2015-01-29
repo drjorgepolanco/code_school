@@ -111,6 +111,7 @@ Array.prototype.countCattle = function (kind) {
 };
 
 console.log(canyonCows.countCattle("calf"));
+// -> 2
 
 
 // -----------------------------------------------------------------------------
@@ -154,6 +155,7 @@ var forestCows = [
 console.log("The currently are " + canyonCows.countCattle('calf') + " calves from the Canyon, " +
             valleyCows.countCattle('bull') + " bulls from the Valley, and " +
             forestCows.countCattle('cow') + " cows from the Forest.");
+// -> The currently are 2 calves from the Canyon, 3 bulls from the Valley, and 3 cows from the Forest.
 
 
 // -----------------------------------------------------------------------------
@@ -199,6 +201,7 @@ Array.prototype.countForBreeding = function () {
 };
 
 console.log(forestCows.countForBreeding());
+// -> 2
 
 
 // -----------------------------------------------------------------------------
@@ -253,8 +256,9 @@ var numPriorityCows = canyonCows.countForBreeding() +
                       valleyCows.countForBreeding() +
                       forestCows.countForBreeding() +
                       badlandsCows.countForBreeding();
-console.log("Herd-merger has indicated " + numPriorityCows + " cows of top breeding priority."); 
-
+console.log("Herd-merger has indicated " + numPriorityCows + 
+            " cows of top breeding priority.");
+// -> Herd-merger has indicated 5 cows of top breeding priority.
 
 
 // -----------------------------------------------------------------------------
@@ -275,8 +279,13 @@ Shoe.prototype = {
 
 var beachShoe = new Shoe(10, "blue", "women", "flipflop");
 console.log(beachShoe.gender);
+// -> women
+
 beachShoe.takeOff();
+// -> Uh, what's that's smell?
+
 beachShoe.putOn();
+// -> Your flipflop's on!
 
 
 // -----------------------------------------------------------------------------
@@ -327,9 +336,14 @@ post2.lightsOn = false;
 
 post1.sendRopeTo(post2);
 
+
 // -----------------------------------------------------------------------------
 // 5.8 Creation with Prototypes II
 // -------------------------------
+
+var post8 = Object.create(genericPost);
+var post9 = Object.create(genericPost);
+var post10 = Object.create(genericPost);
 
 post8.x = 0;
 post8.y = -3;
@@ -456,28 +470,156 @@ function FencePost (x, y, postNum) {
 }
 
 
+// -----------------------------------------------------------------------------
+// 5.12 Overriding Prototypal Methods
+// ----------------------------------
+
+// valueOf()
+
+var Tornado = function (category, affectedAreas, windGust) {
+  this.category = category;
+  this.affectedAreas = affectedAreas;
+  this.windGust = windGust;
+};
+
+var cities = [['Kansas City', 464310], ['Topeka', 127939], ['Lenexa', 49398]];
+var twister = new Tornado ('F5', cities, 220);
+cities.push(['Olathe', 130045]);
+
+Tornado.prototype.valueOf = function () {
+  var sum = 0;
+  for (var i = 0; i < this.affectedAreas.length; i += 1) {
+    sum += this.affectedAreas[i][1];
+  }
+  return sum;
+};
 
 
+// toString()
+
+Tornado.prototype.toString = function () {
+  var list = '';
+  for (var i = 0; i < this.affectedAreas.length; i += 1) {
+    if (i < this.affectedAreas.length - 1) {
+      list += this.affectedAreas[i][0] + ', ';
+    }
+    else {
+      list += 'and ' + this.affectedAreas[i][0];
+    }
+  }
+  return "This tornado has been classified as an " + this.category +
+         ", with wind gusts up to " + this.windGust + "mph.\n" + 
+         "Affected areas are: " + list + ", potentially a affecting a population of " +
+         this.valueOf() + ".";
+}
+
+console.log(twister.toString());
+// -> This tornado has been classified as an F5, with wind gusts up to 220mph.
+//    Affected areas are: Kansas City, Topeka, Lenexa, and Olathe, potentially 
+//    a affecting a population of 771692.
 
 
+// Finding an Object's Constructor and Prototype
+
+console.log(twister.constructor);
+// -> function (category, affectedAreas, windGust) {
+//      this.category = category;
+//      this.affectedAreas = affectedAreas;
+//      this.windGust = windGust;
+//    }
+
+console.log(twister.constructor.prototype);
+// -> Tornado {valueOf: function, toString: function, noCalvesYet: function}
+
+console.log(twister.__proto__);
+// -> Tornado {valueOf: function, toString: function, noCalvesYet: function}
 
 
+// hasOwnProperty(): helps identify property location
+
+Object.prototype.findOwnerOfProperty = function (propName) {
+  var currentObject = this; // <-- the object within which we're looking for the 
+                            //     property currently --> 'the calling object'
+  while (currentObject !== null) { // <-- we keep searching the prototype chain
+                                   // until we try to go beyond the Object prototype 
+    if (currentObject.hasOwnProperty(propName)) {
+      return currentObject;
+    }
+    else {
+      currentObject = currentObject.__proto__;
+    }
+  }
+  return "No property found!";
+};
+
+console.log(twister.findOwnerOfProperty('valueOf'));
+// -> Tornado {valueOf: function, toString: function, noCalvesYet: function, 
+//    findOwnerOfProperty: function}
 
 
+// -----------------------------------------------------------------------------
+// 5.13 Overriding Prototypal Methods I
+// ------------------------------------
+
+// Override the valueOf() function using the Fencepost prototype to produce the 
+// exact distance a post is away from the ranch.
+
+// Here’s the standard algebraic distance formula:
+
+//   straight line distance = square root of [ (x1 - x2)^2 + (y1- y2)^2 ]
+
+Fencepost.prototype.valueOf = function () {
+  return Math.sqrt(Math.pow(this.x, 2) + Math.pow(this.y, 2));
+};
+
+alert(post1.valueOf());
 
 
+// -----------------------------------------------------------------------------
+// 5.14 Overriding Prototypal Methods II
+// -------------------------------------
 
+// Override the toString method by using the Fencepost prototype and a newly built 
+// function that returns a string message in the above format, but with unique data 
+// for each post.
 
+function Fencepost (x, y, postNum){
+  this.x = x;
+  this.y = y;
+  this.postNum = postNum;
+  this.connectionsTo = [];
+}
+Fencepost.prototype = {
+  sendRopeTo: function ( connectedPost ){
+    this.connectionsTo.push(connectedPost);
+  },
+  removeRope: function ( removeTo ){
+    var temp = [];
+    for(var i = 0; i<this.connectionsTo.length; i++){
+      if(this.connectionsTo[i].postNum != removeTo){
+        temp.push(this.connectionsTo[i]);
+      }
+    }
+    this.connectionsTo = temp;
+  },
+  movePost: function (x, y){
+    this.x = x;
+    this.y = y;
+  },
+  valueOf: function (){
+    return Math.sqrt( this.x*this.x + this.y*this.y );
+  }
+}; 
 
-
-
-
-
-
-
-
-
-
+Fencepost.prototype.toString = function () {
+  var list = '';
+  for (var i = 0; i < this.connectionsTo.length; i += 1) {
+    list += this.connectionsTo[i].postNum + '\n';
+  }
+  return "Fence post #" + this.numPost + ":\n" +
+         "Connected to posts:\n" + list +
+         "Distance from ranch: " + this.valueOf() + " yards";
+};
 
 
 </script>
