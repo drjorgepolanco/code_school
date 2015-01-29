@@ -6,91 +6,91 @@
 
 <script type="text/javascript">
 
-// // -----------------------------------------------------------------------------
-// // 2.13 Eficient choice for String Concatenation
-// // ---------------------------------------------
+// -----------------------------------------------------------------------------
+// 2.13 Eficient choice for String Concatenation
+// ---------------------------------------------
 
 
-// var newPageBuild = ["super", "long", "array"];
+var newPageBuild = ["super", "long", "array"];
 
-// var page = "";                                     //
-// // for (var i = 0; i < newPageBuild.length; i += 1) { // <--- Not the best way!!
-// //   page += newPageBuild[i];                         //
-// // }
-
-// pagenewPageBuild.join(''); // <--- Much faster!! and more readable!!
-
-
-// // -----------------------------------------------------------------------------
-// // 2.16 Rampant Var
-// // ----------------
-
-// var list = document.getElementById("population");
-// var inhabitants = ["Nipping Global Variable", "Sneaky For-in", "Bulging Blocking Script"];
-// var fragment = document.createDocumentFragment();
-
-// for (var i = 0, x = inhabitants.length; i<x; i++) {
-//   var element = document.createElement("li");
-//   element.appendChild( document.createTextNode( inhabitants[i]) );
-//   fragment.appendChild(element);
+var page = "";                                     //
+// for (var i = 0; i < newPageBuild.length; i += 1) { // <--- Not the best way!!
+//   page += newPageBuild[i];                         //
 // }
 
-// list.appendChild(fragment);
+pagenewPageBuild.join(''); // <--- Much faster!! and more readable!!
 
 
-// var list = document.getElementById("population"),
-// inhabitants = ["Nipping Global Variable", "Sneaky For-in", "Bulging Blocking Script"],
+// -----------------------------------------------------------------------------
+// 2.16 Rampant Var
+// ----------------
 
-// // Note the fragment here... allows to touch the DOM only once.
-// fragment = document.createDocumentFragment(),
-// element;
+var list = document.getElementById("population");
+var inhabitants = ["Nipping Global Variable", "Sneaky For-in", "Bulging Blocking Script"];
+var fragment = document.createDocumentFragment();
 
-// for (var i = 0, x = inhabitants.length; i<x; i++) {
-//   element = document.createElement("li");
-//   element.appendChild( document.createTextNode( inhabitants[i]) );
-//   fragment.appendChild(element);
-// }
+for (var i = 0, x = inhabitants.length; i<x; i++) {
+  var element = document.createElement("li");
+  element.appendChild( document.createTextNode( inhabitants[i]) );
+  fragment.appendChild(element);
+}
 
-// list.appendChild(fragment);
-
-
-// // -----------------------------------------------------------------------------
-// // 2.19 Testing Speed
-// // ------------------
-
-// function Knight (name, regiment) {
-//   this.name = name;
-//   this.regiment = regiment;
-// }
-
-// var firstRegimentNewbs = ["Grimble Horsehead", "Jark Winterborn", "Bunder Ropefist",
-//                           "Ron Kookoon", "Mike Bambarria", "Animar Polinski", 
-//                           "Tom Zunk", "Berri Boonch"];
-// var firstRegimentKnights = [ /* ... A bunch of objects ... */ ];
-// var secondRegimentNewbs = ["One Two", "Three Four", "Five Six", "Six Seven",
-//                            "Seven Eight", "Eight Nine", "Nine Ten", "Ten Eleven"];
-// var secondRegimentKnights = [ /* ... A bunch of objects ... */ ];
+list.appendChild(fragment);
 
 
-// console.time("Total completion time");
+var list = document.getElementById("population"),
+inhabitants = ["Nipping Global Variable", "Sneaky For-in", "Bulging Blocking Script"],
 
-// // console.time("Time to add " + firstRegimentNewbs.length + " Knights");
-// for (var i = 0, x = firstRegimentNewbs.length; i < x; i += 1) {
-//   // var newGuy = new Knight (firstRegimentNewbs[i], 1);
-//   // firstRegimentKnights.push(newGuy);
-//   firstRegimentKnights.push(new Knight (firstRegimentNewbs[i], 1)); // <-- faster
-// }
-// // console.timeEnd("Time to add " + firstRegimentNewbs.length + " Knights");
-// // -> Time to add 8 Knights: 0.141ms
+// Note the fragment here... allows to touch the DOM only once.
+fragment = document.createDocumentFragment(),
+element;
+
+for (var i = 0, x = inhabitants.length; i<x; i++) {
+  element = document.createElement("li");
+  element.appendChild( document.createTextNode( inhabitants[i]) );
+  fragment.appendChild(element);
+}
+
+list.appendChild(fragment);
 
 
-// // console.time("Time to add " + secondRegimentNewbs.length + " Knights");
-// for (var i = 0, x = secondRegimentNewbs.length; i < x; i += 1) {
-//   secondRegimentKnights.push(new Knight (secondRegimentNewbs[i], 1)); // <-- faster
-// }
-// // console.timeEnd("Time to add " + secondRegimentNewbs.length + " Knights");
+// -----------------------------------------------------------------------------
+// 2.19 Testing Speed
+// ------------------
 
-// console.timeEnd("Total completion time");
+function Knight (name, regiment) {
+  this.name = name;
+  this.regiment = regiment;
+}
+
+var firstRegimentNewbs = ["Grimble Horsehead", "Jark Winterborn", "Bunder Ropefist",
+                          "Ron Kookoon", "Mike Bambarria", "Animar Polinski", 
+                          "Tom Zunk", "Berri Boonch"];
+var firstRegimentKnights = [ /* ... A bunch of objects ... */ ];
+var secondRegimentNewbs = ["One Two", "Three Four", "Five Six", "Six Seven",
+                           "Seven Eight", "Eight Nine", "Nine Ten", "Ten Eleven"];
+var secondRegimentKnights = [ /* ... A bunch of objects ... */ ];
+
+
+console.time("Total completion time");
+
+// console.time("Time to add " + firstRegimentNewbs.length + " Knights");
+for (var i = 0, x = firstRegimentNewbs.length; i < x; i += 1) {
+  // var newGuy = new Knight (firstRegimentNewbs[i], 1);
+  // firstRegimentKnights.push(newGuy);
+  firstRegimentKnights.push(new Knight (firstRegimentNewbs[i], 1)); // <-- faster
+}
+// console.timeEnd("Time to add " + firstRegimentNewbs.length + " Knights");
+// -> Time to add 8 Knights: 0.141ms
+
+
+// console.time("Time to add " + secondRegimentNewbs.length + " Knights");
+for (var i = 0, x = secondRegimentNewbs.length; i < x; i += 1) {
+  secondRegimentKnights.push(new Knight (secondRegimentNewbs[i], 1)); // <-- faster
+}
+// console.timeEnd("Time to add " + secondRegimentNewbs.length + " Knights");
+
+console.timeEnd("Total completion time");
 
 
 // -----------------------------------------------------------------------------
