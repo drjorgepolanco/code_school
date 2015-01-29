@@ -1,0 +1,200 @@
+<html>
+<head>
+  <title>Level 2. The Pendant of Performance</title>
+</head>
+<body>
+
+<script type="text/javascript">
+
+// // -----------------------------------------------------------------------------
+// // 2.13 Eficient choice for String Concatenation
+// // ---------------------------------------------
+
+
+// var newPageBuild = ["super", "long", "array"];
+
+// var page = "";                                     //
+// // for (var i = 0; i < newPageBuild.length; i += 1) { // <--- Not the best way!!
+// //   page += newPageBuild[i];                         //
+// // }
+
+// pagenewPageBuild.join(''); // <--- Much faster!! and more readable!!
+
+
+// // -----------------------------------------------------------------------------
+// // 2.16 Rampant Var
+// // ----------------
+
+// var list = document.getElementById("population");
+// var inhabitants = ["Nipping Global Variable", "Sneaky For-in", "Bulging Blocking Script"];
+// var fragment = document.createDocumentFragment();
+
+// for (var i = 0, x = inhabitants.length; i<x; i++) {
+//   var element = document.createElement("li");
+//   element.appendChild( document.createTextNode( inhabitants[i]) );
+//   fragment.appendChild(element);
+// }
+
+// list.appendChild(fragment);
+
+
+// var list = document.getElementById("population"),
+// inhabitants = ["Nipping Global Variable", "Sneaky For-in", "Bulging Blocking Script"],
+
+// // Note the fragment here... allows to touch the DOM only once.
+// fragment = document.createDocumentFragment(),
+// element;
+
+// for (var i = 0, x = inhabitants.length; i<x; i++) {
+//   element = document.createElement("li");
+//   element.appendChild( document.createTextNode( inhabitants[i]) );
+//   fragment.appendChild(element);
+// }
+
+// list.appendChild(fragment);
+
+
+// // -----------------------------------------------------------------------------
+// // 2.19 Testing Speed
+// // ------------------
+
+// function Knight (name, regiment) {
+//   this.name = name;
+//   this.regiment = regiment;
+// }
+
+// var firstRegimentNewbs = ["Grimble Horsehead", "Jark Winterborn", "Bunder Ropefist",
+//                           "Ron Kookoon", "Mike Bambarria", "Animar Polinski", 
+//                           "Tom Zunk", "Berri Boonch"];
+// var firstRegimentKnights = [ /* ... A bunch of objects ... */ ];
+// var secondRegimentNewbs = ["One Two", "Three Four", "Five Six", "Six Seven",
+//                            "Seven Eight", "Eight Nine", "Nine Ten", "Ten Eleven"];
+// var secondRegimentKnights = [ /* ... A bunch of objects ... */ ];
+
+
+// console.time("Total completion time");
+
+// // console.time("Time to add " + firstRegimentNewbs.length + " Knights");
+// for (var i = 0, x = firstRegimentNewbs.length; i < x; i += 1) {
+//   // var newGuy = new Knight (firstRegimentNewbs[i], 1);
+//   // firstRegimentKnights.push(newGuy);
+//   firstRegimentKnights.push(new Knight (firstRegimentNewbs[i], 1)); // <-- faster
+// }
+// // console.timeEnd("Time to add " + firstRegimentNewbs.length + " Knights");
+// // -> Time to add 8 Knights: 0.141ms
+
+
+// // console.time("Time to add " + secondRegimentNewbs.length + " Knights");
+// for (var i = 0, x = secondRegimentNewbs.length; i < x; i += 1) {
+//   secondRegimentKnights.push(new Knight (secondRegimentNewbs[i], 1)); // <-- faster
+// }
+// // console.timeEnd("Time to add " + secondRegimentNewbs.length + " Knights");
+
+// console.timeEnd("Total completion time");
+
+
+// -----------------------------------------------------------------------------
+// 2.26 Retrieving and Using Numerical Time Data
+// ---------------------------------------------
+
+var rightNow = new Date();
+
+console.log(rightNow);
+// -> Thu Jan 29 2015 13:10:29 GMT-0500 (EST)
+
+console.log(+rightNow); /* <-- SAME AS --> */ console.log(new Number(rightNow));
+// -> 1422555081212
+
+var rightNowNumerical = +new Date();
+var endTime = +new Date();
+var elapsedTime = endTime - rightNowNumerical;
+
+console.log(elapsedTime);
+
+
+// -----------------------------------------------------------------------------
+// Speed Test Class
+// ----------------
+
+function SpeedTest (testImplement, testParams, repetitions) {
+  // testImplement: the code we want to test for performance speed
+  // testParams   : whatever parameters our test code needs to work correctly
+  // repetitions  : the highe the repetitions the more reliable the results
+  this.testImplement = testImplement;
+  this.testParams = testParams;
+  this.repetitions = repetitions || 10000;
+  this.average = 0;
+}
+
+SpeedTest.prototype = {
+  startTest: function () {
+    var beginTime, endTime, sumTimes = 0;
+    for (var i = 0, x = this.repetitions; i < x; i += 1) {
+      beginTime = +new Date();
+      this.testImplement(this.testParams);
+      endTime = +new Date();
+      sumTimes += endTime - beginTime;
+    }
+    this.average = sumTimes / this.repetitions;
+    return console.log("Average execution across " + 
+                       this.repetitions + ": " +
+                       this.average);
+  }
+}
+
+// Code to Test
+// ------------
+
+// No Best Practices
+
+function Knight (name, regiment) {
+  this.name = name;
+  this.regiment = regiment;
+}
+
+var firstRegimentNewbs = ["Grimble Horsehead", "Jark Winterborn", "Bunder Ropefist",
+                          "Ron Kookoon", "Mike Bambarria", "Animar Polinski", 
+                          "Tom Zunk", "Berri Boonch"];
+var firstRegimentKnights = [ /* ... A bunch of objects ... */ ];
+
+var listsForTest = [firstRegimentNewbs, firstRegimentKnights];
+
+var noBP = function (listOfParams) {
+  for (var i = 0; i < listOfParams[0].length; i += 1) {
+    var newGuy = new Knight(listOfParams[0][i], 1);
+    listOfParams[1].push(newGuy);
+  }
+};
+
+var noBPtest = new SpeedTest(noBP, listsForTest, 100000);
+noBPtest.startTest();
+
+
+// Best Practices
+
+function Knight (name, regiment) {
+  this.name = name;
+  this.regiment = regiment;
+}
+
+var firstRegimentNewbs = ["Grimble Horsehead", "Jark Winterborn", "Bunder Ropefist",
+                          "Ron Kookoon", "Mike Bambarria", "Animar Polinski", 
+                          "Tom Zunk", "Berri Boonch"];
+var firstRegimentKnights = [ /* ... A bunch of objects ... */ ];
+
+var listsForTest = [firstRegimentNewbs, firstRegimentKnights];
+
+var BP = function (listOfParams) {
+  for (var i = 0, x = listOfParams[0].length; i < x; i += 1) {
+    listOfParams[1].push(new Knight(listOfParams[0][i], 1));
+  }
+};
+
+var BPtest = new SpeedTest(BP, listsForTest, 100000);
+BPtest.startTest();
+
+
+
+</script>
+</body>
+</html>
