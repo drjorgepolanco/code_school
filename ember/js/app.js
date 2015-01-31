@@ -3,8 +3,12 @@ var App = Ember.Application.create({
 });
 
 App.Router.map(function() {
-  this.route('about', { path: '/aboutus' });
+  this.route('about');
 });
+
+// App.Router.map(function() {
+//   this.route('about', { path: '/aboutus' });
+// });
 
 // App = Ember.Application.create();
 

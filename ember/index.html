@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <title>Ember Starter Kit</title>
-  <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.2/js/bootstrap.min.js"></script>
+  <link rel="stylesheet" type="text/css" href="css/bootstrap.css">
   <link rel="stylesheet" href="css/normalize.css">
   <link rel="stylesheet" href="css/style.css">
 </head>
@@ -13,8 +13,8 @@
       <div class='container'>
         <a href='#' class='navbar-brand'><img src='images/logo.png' alt='logo' height='34' width='224' /></a>
         <ul class='nav navbar-nav navbar-right'>
-          <li class='active'><a href='#/'>Home</a></li>
-          <li><a href='#/aboutus'>About</a></li>
+          {{#link-to 'index'  tagName='li' class='navbar-brand'}}Homepage{{/link-to}}
+          {{#link-to 'about' tagName='li'}}About{{/link-to}}
         </ul>
       </div>
     </div>
