@@ -6,6 +6,10 @@ App.Router.map(function() {
   this.route('about');
 });
 
+App.Router.map(function() {
+  this.route('credits');
+});
+
 // App.Router.map(function() {
 //   this.route('about', { path: '/aboutus' });
 // });

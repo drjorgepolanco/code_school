@@ -11,7 +11,7 @@
   <script type="text/x-handlebars" id="index" data-template-name='application'>
     <div class='navbar navbar-default'>
       <div class='container'>
-        <a href='#' class='navbar-brand'><img src='images/logo.png' alt='logo' height='34' width='224' /></a>
+        {{#link-to 'index' class="navbar-brand" tagName='li'}}<img src='images/logo.png' alt='logo' height='34' width='224' />{{/link-to}}
         <ul class='nav navbar-nav navbar-right'>
           {{#link-to 'index'  tagName='li' class='navbar-brand'}}Homepage{{/link-to}}
           {{#link-to 'about' tagName='li'}}About{{/link-to}}
@@ -24,7 +24,7 @@
     <footer class='container'>
       <hr />
       <p class='pull-left'>&copy; 2013 The Flint &amp; Flame</p>
-      <p class='pull-right'><a href='#/credits'>Credits</a></p>
+      <p class='pull-right'>{{#link-to 'credits'}}Credits{{/link-to}}</p>
     </footer>
   </script>
 
