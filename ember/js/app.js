@@ -66,7 +66,7 @@ App.IndexController = Ember.Controller.extend({
 
 App.ContactsIndexController = Ember.Controller.extend({
   contactName: "Jorge",
-  avatar: "./images/contacts/adam.png",
+  avatar: "./images/contacts/avatar.png",
   open: function() {
     if (new Date().getDay() === 0) {
       return "Closed";
@@ -88,7 +88,8 @@ App.Product = DS.Model.extend({
   description: DS.attr('string'),
   isOnSale: DS.attr('boolean'),
   image: DS.attr('string'),
-  reviews: DS.hasMany('review', {async: true})
+  reviews: DS.hasMany('review', {async: true}),
+  crafter: DS.belongsTo('contact', {async: true})
 });
 
 App.Review = DS.Model.extend({
@@ -100,7 +101,8 @@ App.Review = DS.Model.extend({
 App.Contact = DS.Model.extend({
   name: DS.attr('string'),
   avatar: DS.attr('string'),
-  about: DS.attr('string')
+  about: DS.attr('string'),
+  products: DS.hasMany('product', {async: true})
 });
 
 
@@ -127,7 +129,8 @@ App.Product.FIXTURES = [
     description: 'Flint is...',
     isOnSale: true,
     image: './images/products/flint.png',
-    reviews: [1, 2]
+    reviews: [1, 2],
+    crafter: 1
   },
   {
     id: 2,
@@ -135,7 +138,9 @@ App.Product.FIXTURES = [
     price: 249,
     description: 'Easily..',
     isOnSale: false,
-    image: './images/products/kindling.png'
+    image: './images/products/kindling.png',
+    reviews: [],
+    crafter: 1
   },
   {
     id: 3,
@@ -143,7 +148,9 @@ App.Product.FIXTURES = [
     price: 118,
     description: 'Birch is lorem ipsum color sit amet...',
     isOnSale: true,
-    image: './images/products/birch.png'
+    image: './images/products/birch.png',
+    reviews: [],
+    crafter: 2
   },
   {
     id: 4,
@@ -151,7 +158,9 @@ App.Product.FIXTURES = [
     price: 207,
     description: 'The Bow-drill is the most awesome..',
     isOnSale: true,
-    image: './images/products/bow-drill.png'
+    image: './images/products/bow-drill.png',
+    reviews: [],
+    crafter: 1
   },
   {
     id: 5,
@@ -159,7 +168,9 @@ App.Product.FIXTURES = [
     price: 81,
     description: 'Matches is lorem ipsum color sit amet...',
     isOnSale: true,
-    image: './images/products/matches.png'
+    image: './images/products/matches.png',
+    reviews: [],
+    crafter: 2
   },
   {
     id: 6,
@@ -167,7 +178,9 @@ App.Product.FIXTURES = [
     price: 116,
     description: 'The Tinder really lorem the most awesome..',
     isOnSale: true,
-    image: './images/products/tinder.png'
+    image: './images/products/tinder.png',
+    reviews: [],
+    crafter: 1
   }
 ];
 
@@ -187,14 +200,16 @@ App.Review.FIXTURES = [
 App.Contact.FIXTURES = [
   {
     id: 1,
-    name: "Adam",
-    avatar: './images/contacts/adam.png',
-    about: "Lorem ipsum color sit amet"
+    name: "Giamia",
+    avatar: './images/contacts/giamia.png',
+    about: "Lorem ipsum color sit amet",
+    products: [1, 2, 4, 6]
   },
   {
     id: 2,
-    name: "Martin",
-    avatar: './images/contacts/martin.png',
-    about: "Lorem ipsum color sit amet"
+    name: "Anostagia",
+    avatar: './images/contacts/anostagia.png',
+    about: "Lorem ipsum color sit amet",
+    products: [3, 5]
   }
 ];
