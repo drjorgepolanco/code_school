@@ -3,32 +3,23 @@ var App = Ember.Application.create({
 });
 
 App.Router.map(function() {
-  this.route('about');
   this.route('credits');
-  this.resource('products');
-  this.resource('contacts');
+  this.resource('products', function() {
+    this.resource('product', { path: '/:title' });
+  });
+  this.resource('contacts', function() {
+    this.resource('contact', { path: '/:name' });
+  });
+  
 });
 
 
 App.IndexController = Ember.Controller.extend({
   productsCount: 6,
-  logo: './images/logo.png',
+  logo: './images/logo-small.png',
   time: function() {
     return (new Date()).toDateString()
-  }.property(),
-  open: function() {
-    if (new Date().getDay() === 0) {
-      return "Sorry, sundays closed.";
-    }
-    else {
-      return "Now Open!!";
-    }
   }.property()
-});
-
-App.AboutController = Ember.Controller.extend({
-  contactName: "Jorge",
-  avatar: "./images/contacts/adam.png"
 });
 
 App.ProductsRoute = Ember.Route.extend({
@@ -37,9 +28,36 @@ App.ProductsRoute = Ember.Route.extend({
   }
 });
 
+App.ProductRoute = Ember.Route.extend({
+  model: function(params) {
+    console.log(params);
+    return App.PRODUCTS.findBy('title', params.title);
+  }
+});
+
 App.ContactsRoute = Ember.Route.extend({
   model: function() {
     return App.CONTACTS;
+  }
+});
+
+App.ContactsIndexController = Ember.Controller.extend({
+  contactName: "Jorge",
+  avatar: "./images/contacts/adam.png",
+  open: function() {
+    if (new Date().getDay() === 0) {
+      return "Closed";
+    }
+    else {
+      return "Open";
+    }
+  }.property()
+});
+
+
+App.ContactRoute = Ember.Route.extend({
+  model: function(params) {
+    return App.CONTACTS.findBy('name', params.name);
   }
 });
 
@@ -63,17 +81,12 @@ App.PRODUCTS = [
 App.CONTACTS = [
   {
     name: "Adam",
-    image: './images/contacts/adam.png',
+    avatar: './images/contacts/adam.png',
     about: "Lorem ipsum color sit amet"
   },
   {
     name: "Martin",
-    image: './images/contacts/martin.png',
-    about: "Lorem ipsum color sit amet"
-  },
-  {
-    name: "Patty",
-    image: './images/contacts/patty.png',
+    avatar: './images/contacts/martin.png',
     about: "Lorem ipsum color sit amet"
   }
 ]
