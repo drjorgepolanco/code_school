@@ -79,16 +79,6 @@ App.ContactsIndexController = Ember.Controller.extend({
 
 
 // -----------------------------------------------------------------------------
-// DATA ADAPTERS
-// -------------
-
-App.ApplicationAdapter = DS.FixtureAdapter.extend();
-
-// To communicate with an HTTP server using JSON
-//  App.ApplicationAdapter = DS.RESTAdapter.extend();
-
-
-// -----------------------------------------------------------------------------
 // MODELS
 // ------
 
@@ -97,7 +87,14 @@ App.Product = DS.Model.extend({
   price: DS.attr('number'),
   description: DS.attr('string'),
   isOnSale: DS.attr('boolean'),
-  image: DS.attr('string')
+  image: DS.attr('string'),
+  reviews: DS.hasMany('review', {async: true})
+});
+
+App.Review = DS.Model.extend({
+  text: DS.attr('string'),
+  reviewedAt: DS.attr('date'),
+  product: DS.belongsTo('product')
 });
 
 App.Contact = DS.Model.extend({
@@ -105,6 +102,16 @@ App.Contact = DS.Model.extend({
   avatar: DS.attr('string'),
   about: DS.attr('string')
 });
+
+
+// -----------------------------------------------------------------------------
+// DATA ADAPTERS
+// -------------
+
+App.ApplicationAdapter = DS.FixtureAdapter.extend();
+
+// To communicate with an HTTP server using JSON
+//  App.ApplicationAdapter = DS.RESTAdapter.extend();
 
 
 // -----------------------------------------------------------------------------
@@ -119,7 +126,8 @@ App.Product.FIXTURES = [
     price: 99,
     description: 'Flint is...',
     isOnSale: true,
-    image: './images/products/flint.png'
+    image: './images/products/flint.png',
+    reviews: [1, 2]
   },
   {
     id: 2,
@@ -160,6 +168,19 @@ App.Product.FIXTURES = [
     description: 'The Tinder really lorem the most awesome..',
     isOnSale: true,
     image: './images/products/tinder.png'
+  }
+];
+
+App.Review.FIXTURES = [
+  {
+    id: 1,
+    product: 1,
+    text: "Started a fire in no time!"
+  },
+  {
+    id: 2,
+    product: 1
+    text: "Not the brightest flame, but warm!"
   }
 ];
 
