@@ -90,6 +90,20 @@
         <img {{bind-attr src="image"}} class="img-thumbnail img-rounded"/>
       </div>
     </div>
+    <div class="row">
+      <h3>Reviews</h3>
+      <ul>
+        {{#each review in reviews}}
+          <li>{{review.text}}</li>
+        {{else}}
+          <li>
+            <p class="text-muted">
+              <em>No reviews yet. Be the first to write one!</em>
+            </p>
+          </li>
+        {{/each}}
+      </ul>
+    </div>
   </script>
 
   <script type="text/x-handlebars" data-template-name="products/index">

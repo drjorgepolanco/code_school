@@ -179,7 +179,7 @@ App.Review.FIXTURES = [
   },
   {
     id: 2,
-    product: 1
+    product: 1,
     text: "Not the brightest flame, but warm!"
   }
 ];
