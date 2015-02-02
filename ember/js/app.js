@@ -11,6 +11,7 @@ App.Router.map(function() {
   this.route('credits');
   this.resource('products', function() {
     this.resource('product', { path: '/:product_id' });
+    this.route('onsale'); // /products/onsale -> link would be products.onsale
   });
   this.resource('contacts', function() {
     this.resource('contact', { path: '/:contact_id' });
@@ -63,6 +64,12 @@ App.IndexRoute = Ember.Route.extend({
 App.ProductsIndexRoute = Ember.Route.extend({
   model: function() {
     return this.store.findAll('product');
+  }
+});
+
+App.ProductsOnsaleRoute = Ember.Route.extend({
+  model: function() {
+    return this.modelFor('products').filterBy('isOnSale');
   }
 });
 

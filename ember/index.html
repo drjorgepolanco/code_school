@@ -51,7 +51,10 @@
       <div class="col-sm-4">
         <img {{bind-attr src="product.image"}} class="img-thumbnail col-sm-5"/>
         <div class="col-sm-7">
-          <h2>{{title}}</h2>
+          <p class="label label-warning">
+            {{#link-to 'products.onsale'}}On Sale{{/link-to}}
+          </p>
+          <h2>{{product.title}}</h2>
           <p class="product-description">{{product.description}}</p>
           <p>{{#link-to 'product' this class='btn btn-success'}}
             Buy for ${{product.price}}{{/link-to}}</p>
@@ -122,10 +125,6 @@
     </div>
   </script>
 
-  <script type="text/x-handlebars" data-template-name="products/index">
-    <p class="text-muted">Choose a product from those on the left!</p>
-  </script>
-
   <script type='text/x-handlebars' data-template-name='contacts'>
     <div class='row'>
       <div class='col-sm-9'>
@@ -169,6 +168,25 @@
           <h3>{{title}}</h3>
           <p>{{description}}</p>
           <p>{{#link-to 'product' this}}Buy for ${{price}}{{/link-to}}</p>
+        </li>
+      {{/each}}
+    </ul>
+  </script>
+
+  <script type="text/x-handlebars" data-template-name="products/onsale">
+    <ul class="list-unstyled">
+      {{#each}}
+        <li class="row">
+          <img {{bind-attr src="image"}} class="img-thumbnail col-sm-5"/>
+          <div class="col-sm-7">
+            <h2>{{title}}</h2>
+            <p class="label label-warning">
+              {{#link-to 'products.onsale'}}On Sale{{/link-to}}
+            </p>
+            <p class="product-description">{{description}}</p>
+            <p>{{#link-to 'product' this class="btn btn-success"}}
+              Buy for ${{price}}{{/link-to}}</p>
+          </div>
         </li>
       {{/each}}
     </ul>
