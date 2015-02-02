@@ -30,6 +30,9 @@
   </script>
 
   <script type="text/x-handlebars" data-template-name='index'>
+    <div class="row">
+      <p class="pull-right text-muted time">{{time}}</p>
+    </div>
     <div class="jumbotron">
       <p class="pull-right">{{open}}</p>
       <h1><b>Welcome to The Flint &amp; Flame!</b></h1>
@@ -43,7 +46,19 @@
         {{/link-to}}
       </p>
   </div>
-  <p class="pull-right text-muted">Rendered on {{time}}</p>
+  <div class="row">
+    {{#each product in onSale}}
+      <div class="col-sm-4">
+        <img {{bind-attr src="product.image"}} class="img-thumbnail col-sm-5"/>
+        <div class="col-sm-7">
+          <h2>{{title}}</h2>
+          <p class="product-description">{{product.description}}</p>
+          <p>{{#link-to 'product' this class='btn btn-success'}}
+            Buy for ${{product.price}}{{/link-to}}</p>
+        </div>
+      </div>
+    {{/each}}
+  </div>
   </script>
 
   <script type='text/x-handlebars' data-template-name='contacts/index'>
@@ -144,6 +159,19 @@
         </ul>
       </div>
     </div>
+  </script>
+
+  <script type="text/x-handlebars" data-template-name="products/index">
+    <h1>Todays Product Deals</h1>
+    <ul>
+      {{#each deals}}
+        <li class="row">
+          <h3>{{title}}</h3>
+          <p>{{description}}</p>
+          <p>{{#link-to 'product' this}}Buy for ${{price}}{{/link-to}}</p>
+        </li>
+      {{/each}}
+    </ul>
   </script>
 
   <script src="js/libs/jquery-1.10.2.js"></script>

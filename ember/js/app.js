@@ -60,6 +60,12 @@ App.IndexRoute = Ember.Route.extend({
   }
 });
 
+App.ProductsIndexRoute = Ember.Route.extend({
+  model: function() {
+    return this.store.findAll('product');
+  }
+});
+
 App.ContactsIndexRoute = Ember.Route.extend({
   model: function() {
     return this.store.find('contact', 2);
@@ -75,11 +81,25 @@ App.IndexController = Ember.ArrayController.extend({
   productsCount: function() {
     return this.get('length');
   }.property('length'), /* This will keep a watch on 'length' */
-  //productsCount: Ember.computed.alias('length') <-- shorthand version
+  //productsCount: Ember.computed.alias('length'), <-- shorthand version
   logo: './images/logo-small.png',
   time: function() {
     return (new Date()).toDateString()
-  }.property()
+  }.property(),
+  onSale: function() {
+    // return this.filter(function(product) {
+    //   return product.get('isOnSale').slice(0, 3);
+    // }); <-- long version
+    return this.filterBy('isOnSale').slice(0, 3); // <-- shorthand version
+  }.property('@each.isOnSale')
+});
+
+App.ProductsIndexController = Ember.ArrayController.extend({
+  deals: function() {
+    return this.filter(function(product) {
+      return product.get('price') < 500;
+    });
+  }.property('@each.price')
 });
 
 App.ContactsIndexController = Ember.ObjectController.extend({
@@ -180,7 +200,7 @@ App.Product.FIXTURES = [
     title: 'Birch',
     price: 118,
     description: 'Birch is lorem ipsum color sit amet...',
-    isOnSale: true,
+    isOnSale: false,
     image: './images/products/birch.png',
     reviews: [],
     crafter: 2
