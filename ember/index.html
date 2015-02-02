@@ -83,6 +83,10 @@
   <script type="text/x-handlebars" data-template-name="products">
     <div class="row">
       <div class="col-sm-3">
+        <div class='list-group'>
+          {{#link-to 'products.deals' classNames='list-group-item'}}Deals{{/link-to}}
+          {{#link-to 'products.onsale' classNames='list-group-item'}}On Sale{{/link-to}}
+        </div>
         <div class="list-group">
           {{#each}}
             {{#link-to "product" this classNames="list-group-item"}}
@@ -161,14 +165,15 @@
   </script>
 
   <script type="text/x-handlebars" data-template-name="products/index">
-    <h1>Todays Product Deals</h1>
+    <h1>All Products</h1>
     <ul>
-      {{#each deals}}
-        <li class="row">
+      {{#each}}
+        <div class="row">
+          <img {{bind-attr src="image"}} class="img-thumbnail col-sm-5"/>
           <h3>{{title}}</h3>
           <p>{{description}}</p>
           <p>{{#link-to 'product' this}}Buy for ${{price}}{{/link-to}}</p>
-        </li>
+        </div>
       {{/each}}
     </ul>
   </script>
@@ -185,6 +190,23 @@
             </p>
             <p class="product-description">{{description}}</p>
             <p>{{#link-to 'product' this class="btn btn-success"}}
+              Buy for ${{price}}{{/link-to}}</p>
+          </div>
+        </li>
+      {{/each}}
+    </ul>
+  </script>
+
+  <script type="text/x-handlebars" data-template-name="products/deals">
+    <h1>Deals</h1>
+    <ul class='list-unstyled'>
+      {{#each}}
+        <li class="row">
+          <img {{bind-attr src='image'}} class='img-thumbnail col-sm-5' />
+          <div class="col-sm-7">
+            <h2>{{title}}</h2>
+            <p class="product-description">{{description}}</p>
+            <p>{{#link-to 'product' this class='btn btn-success'}}
               Buy for ${{price}}{{/link-to}}</p>
           </div>
         </li>

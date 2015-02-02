@@ -12,6 +12,7 @@ App.Router.map(function() {
   this.resource('products', function() {
     this.resource('product', { path: '/:product_id' });
     this.route('onsale'); // /products/onsale -> link would be products.onsale
+    this.route('deals');
   });
   this.resource('contacts', function() {
     this.resource('contact', { path: '/:contact_id' });
@@ -73,6 +74,14 @@ App.ProductsOnsaleRoute = Ember.Route.extend({
   }
 });
 
+App.ProductsDealsRoute = Ember.Route.extend({
+  model: function() {
+    return this.modelFor('products').filter(function() {
+      return product.get('price') < 500;
+    });
+  }
+});
+
 App.ContactsIndexRoute = Ember.Route.extend({
   model: function() {
     return this.store.find('contact', 2);
@@ -101,13 +110,13 @@ App.IndexController = Ember.ArrayController.extend({
   }.property('@each.isOnSale')
 });
 
-App.ProductsIndexController = Ember.ArrayController.extend({
-  deals: function() {
-    return this.filter(function(product) {
-      return product.get('price') < 500;
-    });
-  }.property('@each.price')
-});
+// App.ProductsIndexController = Ember.ArrayController.extend({
+//   deals: function() {
+//     return this.filter(function(product) {
+//       return product.get('price') < 500;
+//     });
+//   }.property('@each.price')
+// });
 
 App.ContactsIndexController = Ember.ObjectController.extend({
   contactName: Ember.computed.alias('name'),
