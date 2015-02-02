@@ -51,7 +51,7 @@
       <img {{bind-attr src='avatar'}} alt='Avatar' class='img-thumbnail col-sm-4'/>
       <div class='col-sm-8'>
         <h1>About The Fire Sprites</h1>
-        <p>Contact {{contactName}} for more info!</p>
+        <p>Contact {{#link-to 'contact' this}} {{contactName}} {{/link-to}} for more info!</p>
         <p>Current Status: {{open}}.</p>
       </div>
     </div>

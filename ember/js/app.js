@@ -26,6 +26,9 @@ App.ProductsRoute = Ember.Route.extend({
   model: function() {
     // return App.PRODUCTS;
     return this.store.findAll('product');
+
+    // Server sorting
+    // return this.store.find('product', { order: 'title' });
   }
 });
 
@@ -51,21 +54,36 @@ App.ContactRoute = Ember.Route.extend({
   }
 });
 
+App.IndexRoute = Ember.Route.extend({
+  model: function() {
+    return this.store.findAll('product');
+  }
+});
+
+App.ContactsIndexRoute = Ember.Route.extend({
+  model: function() {
+    return this.store.find('contact', 2);
+  }
+});
+
 
 // -----------------------------------------------------------------------------
 // CONTROLLERS
 // -----------
 
-App.IndexController = Ember.Controller.extend({
-  productsCount: 3,
+App.IndexController = Ember.ArrayController.extend({
+  productsCount: function() {
+    return this.get('length');
+  }.property('length'), /* This will keep a watch on 'length' */
+  //productsCount: Ember.computed.alias('length') <-- shorthand version
   logo: './images/logo-small.png',
   time: function() {
     return (new Date()).toDateString()
   }.property()
 });
 
-App.ContactsIndexController = Ember.Controller.extend({
-  contactName: "Jorge",
+App.ContactsIndexController = Ember.ObjectController.extend({
+  contactName: Ember.computed.alias('name'),
   avatar: "./images/contacts/avatar.png",
   open: function() {
     if (new Date().getDay() === 0) {
@@ -75,6 +93,21 @@ App.ContactsIndexController = Ember.Controller.extend({
       return "Open";
     }
   }.property()
+});
+
+// Array Controller
+App.ProductsController = Ember.ArrayController.extend({
+  sortProperties: ['title'] /* Default sorting A-Z */
+
+  //sortProperties: ['title'], /* Reverse sorting Z-A */
+  //sortAscending: false
+});
+
+// Object Controller
+// App.ProductsController = Ember.ObjectController.extend({});
+
+App.ContactsController = Ember.ArrayController.extend({
+  sortProperties: ['name']
 });
 
 
