@@ -8,6 +8,9 @@
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
+
+  <!-- APPLICATION -->
+
   <script type="text/x-handlebars" id="index" data-template-name='application'>
     <div class='navbar navbar-default'>
       <div class='container'>
@@ -29,6 +32,8 @@
     </footer>
   </script>
 
+  <!-- INDEX -->
+
   <script type="text/x-handlebars" data-template-name='index'>
     <div class="row">
       <p class="pull-right text-muted time">{{time}}</p>
@@ -47,38 +52,32 @@
       </p>
   </div>
   <div class="row">
-    {{#each product in onSale}}
-      <div class="col-sm-4">
-        <img {{bind-attr src="product.image"}} class="img-thumbnail col-sm-5"/>
-        <div class="col-sm-7">
-          <p class="label label-warning">
-            {{#link-to 'products.onsale'}}On Sale{{/link-to}}
-          </p>
-          <h2>{{product.title}}</h2>
-          <p class="product-description">{{product.description}}</p>
-          <p>{{#link-to 'product' this class='btn btn-success'}}
-            Buy for ${{product.price}}{{/link-to}}</p>
-        </div>
-      </div>
+    {{#each onSale}}
+      {{product-details product=this classNames='col-sm-4'}}
     {{/each}}
   </div>
   </script>
 
-  <script type='text/x-handlebars' data-template-name='contacts/index'>
-    <div class='row'>
-      <img {{bind-attr src='avatar'}} alt='Avatar' class='img-thumbnail col-sm-4'/>
-      <div class='col-sm-8'>
-        <h1>About The Fire Sprites</h1>
-        <p>Contact {{#link-to 'contact' this}} {{contactName}} {{/link-to}} for more info!</p>
-        <p>Current Status: {{open}}.</p>
-      </div>
+
+  <!-- PRODUCTS COMPONENT -->
+
+  <script type="text/x-handlebars" data-template-name='components/product-details'>
+    <img {{bind-attr src="product.image"}} class="img-thumbnail col-sm-5"/>
+    <div class="col-sm-7">
+      <p class="label label-warning">
+        {{#link-to 'products.onsale'}}On Sale{{/link-to}}
+      </p>
+      <h2>{{product.title}}</h2>
+      <p class="product-description">{{product.description}}</p>
+      {{#if hasReviews}}
+        <p class="text-muted">Read all reviews ({{reviewsCount}})</p>
+      {{/if}}
+      <p>{{#link-to 'product' product class='btn btn-success'}}
+        Buy for ${{product.price}}{{/link-to}}</p>
     </div>
   </script>
 
-  <script type="text/x-handlebars" data-template-name='credits'>
-    <h1>Thanks for the Help!</h1>
-    <p>This site would not be possible without the hardworking Ember Core Team!</p>
-  </script>
+    <!-- PRODUCTS TEMPLATES -->
 
   <script type="text/x-handlebars" data-template-name="products">
     <div class="row">
@@ -102,30 +101,80 @@
   </script>
 
   <script type="text/x-handlebars" data-template-name="product">
-    <div class="row">
-      <div class="col-md-7">
-        <h2>{{title}}</h2>
-        <h3 class="text-success">${{price}}</h3>
-        <p class="text-muted">{{description}}</p>
-        <p>Finely crafted by {{#link-to "contact" crafter}}{{crafter.name}}{{/link-to}}</p>
-      </div>
-      <div class="col-md-5">
-        <img {{bind-attr src="image"}} class="img-thumbnail img-rounded"/>
-      </div>
+    <div class="col-md-7">
+      <h2>{{title}}</h2>
+      <h3 class="text-success">${{price}}</h3>
+      <p class="text-muted">{{description}}</p>
+      <p>Finely crafted by {{#link-to "contact" crafter}}{{crafter.name}}{{/link-to}}</p>
     </div>
-    <div class="row">
-      <h3>Reviews</h3>
-      <ul>
-        {{#each review in reviews}}
-          <li>{{review.text}}</li>
-        {{else}}
-          <li>
-            <p class="text-muted">
-              <em>No reviews yet. Be the first to write one!</em>
-            </p>
-          </li>
-        {{/each}}
-      </ul>
+    <div class="col-md-5">
+      <img {{bind-attr src="image"}} class="img-thumbnail img-rounded"/>
+    </div>
+    <h3>Reviews</h3>
+    <ul>
+      {{#each review in reviews}}
+        <li>{{review.text}}</li>
+      {{else}}
+        <li>
+          <p class="text-muted">
+            <em>No reviews yet. Be the first to write one!</em>
+          </p>
+        </li>
+      {{/each}}
+    </ul>
+  </script>
+
+  <script type="text/x-handlebars" data-template-name="products/index">
+    <h1>All Products</h1>
+    <ul>
+      {{#each}}
+        {{product-details product=this classNames='row' tagName='li'}}
+      {{/each}}
+    </ul>
+  </script>
+
+  <script type="text/x-handlebars" data-template-name="products/onsale">
+    <ul class="list-unstyled">
+      {{#each}}
+        {{product-details product=this tagName='li' classNames='row'}}
+      {{/each}}
+    </ul>
+  </script>
+
+  <script type="text/x-handlebars" data-template-name="products/deals">
+    <h1>Deals</h1>
+    <ul class='list-unstyled'>
+      {{#each}}
+        {{product-details product=this classNames='row' tagName='li'}}
+      {{/each}}
+    </ul>
+  </script>
+
+
+<!-- CONTACTS COMPONENT -->
+  <script type='text/x-handlebars' data-template-name='components/contact-details'>
+    <div class='col-sm-9'>
+      <h2>About {{contact.name}}</h2>
+      <p>{{contact.about}}</p>
+      {{#if isProductive}}
+        <p class="text-muted">This one has created {{productsCount}}</p>
+      {{/if}}
+    </div>
+    <div class='col-sm-3'>
+      <img {{bind-attr src='contact.avatar' alt='contact.name'}} class='img-thumbnail img-rounded'/>
+    </div>
+  </script>
+
+<!-- CONTACTS TEMPLATE -->
+
+  <script type='text/x-handlebars' data-template-name='contacts/index'>
+    <div class='row'>
+      <img {{bind-attr src='avatar'}} alt='Avatar' class='img-thumbnail col-sm-4'/>
+      <div class='col-sm-8'>
+        <h1>About The Fire Sprites</h1>
+        <p>Contact {{#link-to 'contact' this}} {{contactName}} {{/link-to}} for more info!</p>
+        <p>Current Status: {{open}}.</p>
+      </div>
     </div>
   </script>
 
@@ -164,55 +213,14 @@
     </div>
   </script>
 
-  <script type="text/x-handlebars" data-template-name="products/index">
-    <h1>All Products</h1>
-    <ul>
-      {{#each}}
-        <div class="row">
-          <img {{bind-attr src="image"}} class="img-thumbnail col-sm-5"/>
-          <h3>{{title}}</h3>
-          <p>{{description}}</p>
-          <p>{{#link-to 'product' this}}Buy for ${{price}}{{/link-to}}</p>
-        </div>
-      {{/each}}
-    </ul>
+
+  <!-- CREDITS -->
+
+  <script type="text/x-handlebars" data-template-name='credits'>
+    <h1>Thanks for the Help!</h1>
+    <p>This site would not be possible without the hardworking Ember Core Team!</p>
   </script>
 
-  <script type="text/x-handlebars" data-template-name="products/onsale">
-    <ul class="list-unstyled">
-      {{#each}}
-        <li class="row">
-          <img {{bind-attr src="image"}} class="img-thumbnail col-sm-5"/>
-          <div class="col-sm-7">
-            <h2>{{title}}</h2>
-            <p class="label label-warning">
-              {{#link-to 'products.onsale'}}On Sale{{/link-to}}
-            </p>
-            <p class="product-description">{{description}}</p>
-            <p>{{#link-to 'product' this class="btn btn-success"}}
-              Buy for ${{price}}{{/link-to}}</p>
-          </div>
-        </li>
-      {{/each}}
-    </ul>
-  </script>
-
-  <script type="text/x-handlebars" data-template-name="products/deals">
-    <h1>Deals</h1>
-    <ul class='list-unstyled'>
-      {{#each}}
-        <li class="row">
-          <img {{bind-attr src='image'}} class='img-thumbnail col-sm-5' />
-          <div class="col-sm-7">
-            <h2>{{title}}</h2>
-            <p class="product-description">{{description}}</p>
-            <p>{{#link-to 'product' this class='btn btn-success'}}
-              Buy for ${{price}}{{/link-to}}</p>
-          </div>
-        </li>
-      {{/each}}
-    </ul>
-  </script>
 
   <script src="js/libs/jquery-1.10.2.js"></script>
   <script src="js/libs/handlebars-v2.0.0.js"></script>

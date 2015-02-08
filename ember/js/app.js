@@ -148,6 +148,35 @@ App.ContactsController = Ember.ArrayController.extend({
 
 
 // -----------------------------------------------------------------------------
+// VIEWS
+// -----
+
+App.ProductView = Ember.View.extend({
+  classNames: ['row'],
+  classNameBindings: ['isOnSale'],
+  isOnSale: Ember.computed.alias('controller.isOnSale')
+});
+
+
+// -----------------------------------------------------------------------------
+// COMPONENTS
+// ----------
+
+App.ProductDetailsComponent = Ember.Component.extend({
+  reviewsCount: Ember.computed.alias('product.reviews.length'),
+  hasReviews: function () {
+    return this.get('reviewsCount') > 0;
+  }.property('reviewsCount')
+});
+
+App.ContactDetailsComponent = Ember.Component.extend({
+  productsCount: Ember.computed.alias('contact.products.length'),
+  isProductive: function () {
+    return this.get('productsCount') > 3;
+  }.property('productsCount')
+});
+
+// -----------------------------------------------------------------------------
 // MODELS
 // ------
 
