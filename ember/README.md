@@ -1,36 +1,46 @@
-starter-kit
-===========
+#Warming up with Ember.js
+Written by **Adam Fortuna**
 
-A starter kit for Ember
+##Code School Javascript Path
 
-Your Ember.js project is almost ready! Here's how to get started:
+###Course Description
+Learn to demystify the Ember.js JavaScript framework by breaking it down. 
 
-- Start writing your app in `js/app.js`.
+See how to build an application from scratch using Ember.js and Twitter Bootstrap.
 
-- Describe your application HTML in `index.html`.
 
-- During development, you can link to `js/libs/ember-*.js` to get the
-  unminified version of Ember.js.
+###1. Warming Up
 
-- Add CSS to `css/style.css`.
+- Setting Up Ember.js
+- Named Templates
+- The Router
 
-- Open `index.html` in your browser.
+###2. Rendering the Flame
+- Handlebars Helpers
+- Using {{link-to}}
+- Controller Basics
 
-Tests
-=====
+###3. A Route Through the Woods
+- Resource Routes
+- Dynamic Routes
+- Nested Routes
 
-This starter kit comes with an integration test sample, written for QUnit runner. 
+###4. Acorn Models and Pinecone Data
+- Models and Ember Data
+- Related Models
 
-You can run the tests by opening the `index.html?test` page in your browser.
+###5. Controlling our Growth
+- Array Controllers
+- Computed Properties
+- Nested Routes with Controllers
 
-The test is located in the `tests/tests.js` file. You can see how such an 
-integration test should be written, using QUnit assertions and ember-testing helpers.
+###6. The Template Forest
+- Components
+- Component Objects
+- Views & Partials
+- Render
 
-For more information about ember-testing package see [ember-testing](http://emberjs.com/guides/testing/integration/).
-
-For more information about the QUnit testing framework, see [QUnit](http://qunitjs.com/).
-
-Contact
-====
-
-[www.emberjs.com](http://www.emberjs.com)
+###7. Acting on Instinct
+- Controller Actions
+- Model Data Binding
+- Events in Views
