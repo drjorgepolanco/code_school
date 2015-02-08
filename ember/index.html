@@ -2,7 +2,7 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <title>Ember Starter Kit</title>
+  <title>Warming Up with Ember.js</title>
   <link rel="stylesheet" type="text/css" href="css/bootstrap.css">
   <link rel="stylesheet" href="css/normalize.css">
   <link rel="stylesheet" href="css/style.css">
@@ -105,23 +105,31 @@
       <h2>{{title}}</h2>
       <h3 class="text-success">${{price}}</h3>
       <p class="text-muted">{{description}}</p>
-      <p>Finely crafted by {{#link-to "contact" crafter}}{{crafter.name}}{{/link-to}}</p>
+      <p class="text-muted">This product has a {{rating}} star rating!</p>
+      <p>Finely crafted by {{#link-to "contact" crafter}}{{crafter.name}}{{/link-to}}
+      </p>
     </div>
     <div class="col-md-5">
       <img {{bind-attr src="image"}} class="img-thumbnail img-rounded"/>
     </div>
-    <h3>Reviews</h3>
-    <ul>
-      {{#each review in reviews}}
-        <li>{{review.text}}</li>
-      {{else}}
-        <li>
-          <p class="text-muted">
-            <em>No reviews yet. Be the first to write one!</em>
-          </p>
-        </li>
-      {{/each}}
-    </ul>
+    {{render 'reviews' reviews}}
+    
+    <div class='new-rating'>
+      <h3>Rate {{title}}</h3>
+      {{view Ember.Select content=ratings value='selectedRating'}}
+      <button {{action 'createRating'}} class='btn btn-primary'>Rate</button>
+    </div>
+
+    <div class='new-review'>
+      <h3>Review {{title}}</h3>
+      {{#if text}}
+        <p class="text-muted">{{text}}</p>
+      {{/if}}
+      {{textarea valueBinding='text'}}
+      <button {{action 'createReview'}} class='btn btn-primary'>Review</button>
+    </div>
+    <br>
+    <p>{{contact-details contact=crafter className='row'}}</p>
   </script>
 
   <script type="text/x-handlebars" data-template-name="products/index">
@@ -150,6 +158,21 @@
     </ul>
   </script>
 
+  <script type="text/x-handlebars" data-template-name='reviews'>
+    <h3>Reviews</h3>
+    <ul>
+      {{#each}}
+        <li>{{text}}</li>
+      {{else}}
+        <li>
+          <p class="text-muted">
+            <em>No reviews yet. Be the first to write one!</em>
+          </p>
+        </li>
+      {{/each}}
+    </ul>
+  </script>
+
 
 <!-- CONTACTS COMPONENT -->
   <script type='text/x-handlebars' data-template-name='components/contact-details'>
@@ -157,7 +180,7 @@
       <h2>About {{contact.name}}</h2>
       <p>{{contact.about}}</p>
       {{#if isProductive}}
-        <p class="text-muted">This one has created {{productsCount}}</p>
+        <p class="text-muted">{{contact.name}}&nbsp; has created {{productsCount}} products</p>
       {{/if}}
     </div>
     <div class='col-sm-3'>
@@ -203,14 +226,18 @@
       <div class="col-sm-7">
         <h2>{{name}}</h2>
         <p class="text-muted">{{about}}</p>
-        <h2>Products</h2>
-        <ul>
-        {{#each products}}
-          <li>{{#link-to "product" this}}{{title}}{{/link-to}}</li>
-        {{/each}}
-        </ul>
+        {{render 'contact/products' products}}
       </div>
     </div>
+  </script>
+
+  <script type="text/x-handlebars" data-template-name='contact/products'>
+    <h2>Products</h2>
+    <ul>
+      {{#each}}
+        <li>{{#link-to "product" this}}{{title}}{{/link-to}}</li>
+      {{/each}}
+    </ul>
   </script>
 
 
