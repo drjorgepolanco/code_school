@@ -113,21 +113,17 @@
       <img {{bind-attr src="image"}} class="img-thumbnail img-rounded"/>
     </div>
     {{render 'reviews' reviews}}
-    
-    <div class='new-rating'>
-      <h3>Rate {{title}}</h3>
-      {{view Ember.Select content=ratings value='selectedRating'}}
-      <button {{action 'createRating'}} class='btn btn-primary'>Rate</button>
-    </div>
 
-    <div class='new-review'>
-      <h3>Review {{title}}</h3>
-      {{#if text}}
-        <p class="text-muted">{{text}}</p>
-      {{/if}}
-      {{textarea valueBinding='text'}}
-      <button {{action 'createReview'}} class='btn btn-primary'>Review</button>
-    </div>
+    {{#if isNotReviewed}}
+      <div class='new-review'>
+        <h3>Review {{title}}</h3>
+        {{#if review.text}}
+        {{/if}}
+        {{textarea valueBinding='review.text'}}
+        {{view Ember.Select content=ratings value=review.rating}}
+        <button {{action 'createReview'}} class='btn btn-primary'>Review</button>
+      </div>
+    {{/if}}
     <br>
     <p>{{contact-details contact=crafter className='row'}}</p>
   </script>
@@ -162,7 +158,12 @@
     <h3>Reviews</h3>
     <ul>
       {{#each}}
-        <li>{{text}}</li>
+        {{#view 'App.ReviewView' tag='li' length=text.length}}
+          <div class='content'>{{text}}</div>
+          <span class='expand text-success'>
+            Read {{#if view.isExpanded}}Less{{else}}More{{/if}}
+          </span>
+        {{/view}}
       {{else}}
         <li>
           <p class="text-muted">

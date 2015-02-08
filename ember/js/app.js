@@ -157,35 +157,24 @@ App.ContactProductsController = Ember.ArrayController.extend({
 });
 
 App.ProductController = Ember.ObjectController.extend({
-  text:'', // <-- If left off, the property would be set on the model! NO NO
-  selectedRating: 5,
+  review: function () {
+    return this.store.createRecord('review', {
+      product: this.get('model')
+    });
+  }.property('model'),
   ratings: [1, 2, 3, 4, 5],
   actions: {
     createReview: function () {
       console.log('createReview Called');
 
-      // Step 1: Build a new Review object
-      var review = this.store.createRecord('review', {
-        text: this.get('text'),
-        product: this.get('model'),
-        reviewedAt: new Date()
+      var controller = this;
+      this.get('review').set('reviewedAt', new Date());
+      this.get('review').save().then(function (review) {
+        controller.get('model.reviews').addObject(review)
       });
-      var controller = this; // Need to be able to reference the controller in the save callback
-
-      // Step 2: Save the Review
-      review.save().then(function(review) {
-        // Step 3: Clear out the text variable
-        // Will be called when the save call finishes
-        controller.set('text', ''); // Clear out the text field
-        controller.get('model.reviews').addObject(review); // Add the review to products review
-      });
-    },
-    createRating: function () {
-      var product = this.get('model'), selectedRating = this.get('selectedRating');
-      product.get('ratings').addObject(selectedRating);
-      product.save();
     }
-  }
+  },
+  isNotReviewed: Ember.computed.alias('review.isNew')
 });
 
 
@@ -197,6 +186,15 @@ App.ProductView = Ember.View.extend({
   classNames: ['row'],
   classNameBindings: ['isOnSale'],
   isOnSale: Ember.computed.alias('controller.isOnSale')
+});
+
+App.ReviewView = Ember.View.extend({
+  isExpanded: false,
+  classNameBindings: ['isExpanded', 'readMore'],
+  click: function () {
+    this.toggleProperty('isExpanded');
+  },
+  readMore: Ember.computed.gt('length', 140)
 });
 
 
@@ -230,18 +228,19 @@ App.Product = DS.Model.extend({
   image: DS.attr('string'),
   reviews: DS.hasMany('review', {async: true}),
   crafter: DS.belongsTo('contact', {async: true}),
-  ratings: DS.attr(),
   rating: function () {
-    return this.get('ratings').reduce(function (previousValue, rating) {
-      return previousValue + rating;
-    }, 0) / this.get('ratings').length;
-  }.property('ratings.@each')
+    if (this.get('reviews.length') === 0) { return 0; }
+    return this.get('reviews').reduce(function(previousValue, review) {
+      return previousValue + review.get('rating');
+    }, 0) / this.get('reviews.length');
+  }.property('reviews.@each.rating')
 });
 
 App.Review = DS.Model.extend({
   text: DS.attr('string'),
   reviewedAt: DS.attr('date'),
-  product: DS.belongsTo('product')
+  product: DS.belongsTo('product'),
+  rating: DS.attr('number')
 });
 
 App.Contact = DS.Model.extend({
@@ -277,8 +276,7 @@ App.Product.FIXTURES = [
     isOnSale: true,
     image: './images/products/flint.png',
     reviews: [1, 2],
-    crafter: 1,
-    ratings: [2,1,3,3]
+    crafter: 1
   },
   {
     id: 2,
@@ -288,8 +286,7 @@ App.Product.FIXTURES = [
     isOnSale: false,
     image: './images/products/kindling.png',
     reviews: [],
-    crafter: 1,
-    ratings: [2,1,3,3]
+    crafter: 1
   },
   {
     id: 3,
@@ -299,8 +296,7 @@ App.Product.FIXTURES = [
     isOnSale: false,
     image: './images/products/birch.png',
     reviews: [],
-    crafter: 2,
-    ratings: [2,1,3,3]
+    crafter: 2
   },
   {
     id: 4,
@@ -311,8 +307,7 @@ App.Product.FIXTURES = [
     isOnSale: true,
     image: './images/products/bow-drill.png',
     reviews: [],
-    crafter: 1,
-    ratings: [1,3,3]
+    crafter: 1
   },
   {
     id: 5,
@@ -324,8 +319,6 @@ App.Product.FIXTURES = [
     image: './images/products/matches.png',
     reviews: [],
     crafter: 2
-    ,
-    ratings: [2,2,5]
   },
   {
     id: 6,
@@ -335,8 +328,7 @@ App.Product.FIXTURES = [
     isOnSale: true,
     image: './images/products/tinder.png',
     reviews: [],
-    crafter: 1,
-    ratings: [2,1,3]
+    crafter: 1
   }
 ];
 
@@ -344,12 +336,14 @@ App.Review.FIXTURES = [
   {
     id: 1,
     product: 1,
-    text: "Started a fire in no time!"
+    text: "Started a fire in no time!",
+    rating: 4
   },
   {
     id: 2,
     product: 1,
-    text: "Not the brightest flame, but warm!"
+    text: "Not the brightest flame, but warm!",
+    rating: 3
   }
 ];
 
@@ -374,3 +368,16 @@ App.Contact.FIXTURES = [
     products: [3, 5]
   }
 ];
+
+
+// -----------------------------------------------------------------------------
+// HANDLEBARS CUSTOM HELPERS
+// -------------------------
+
+// Ember.Handlebars.registerBoundHelper('markdown', function (text) {
+//   return new Handlebars.SafeString(markdown.toHTML(text));
+// });
+
+// Ember.Handlebars.registerBoundHelper('money', function (value) {
+//   return accounting.formatMoney(value/100);
+// });
