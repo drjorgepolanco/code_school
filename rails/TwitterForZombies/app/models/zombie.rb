@@ -1,10 +1,21 @@
 class Zombie < ActiveRecord::Base
-  # scope :rotting, where(rotting: true)
-  # scope :fresh, where("age < 20")
-  # scope :recent, order("created_at DESC").limit(3)
+  # scope :rotting, -> { where(rotting: true) }
+  # scope :fresh, -> { where("age < 20") }
+  # scope :recent, -> { order("created_at DESC").limit(3) }
+
 
   before_save :make_rotting
-  has_one :brain
+  has_one :brain, dependent: :destroy
+  delegate :flavor, to: :brain, prefix: true, allow_nil: true
+
+  # def brain_flavor
+  #   if brain.flavor == nil
+  #     "No brain"
+  #   else
+  #     brain.flavor
+  #   end
+  # end
+
 
   def make_rotting
     if age > 20             # Doesn't use 'self' because we are only reading
@@ -38,3 +49,11 @@ end
 
 # before_destroy      :set_deleted_flag
 # after_destroy
+
+
+# Relationship Options
+
+# dependent: :destroy         <- will call destroy on associated objects
+# foreign_key: :undead_id     <- changes the associated key (i.e. zombie_id)
+# primary_key: :zid           <- changes the primary key (i.e. id)
+# validate: true              <- when zombie validates, brain will too
