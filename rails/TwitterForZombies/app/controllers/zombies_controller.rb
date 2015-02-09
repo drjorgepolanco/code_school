@@ -4,9 +4,9 @@ class ZombiesController < ApplicationController
   # GET /zombies
   # GET /zombies.json
   def index
-    # @zombies = Zombie.all
+    @zombies = Zombie.all
     # @rotting_zombies = Zombie.where(rotting: true)
-    @rotting_zombies = Zombie.rotting
+    # @rotting_zombies = Zombie.rotting   # <-- After creating a scope in the model
   end
 
   # GET /zombies/1

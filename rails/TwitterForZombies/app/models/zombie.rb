@@ -1,9 +1,10 @@
 class Zombie < ActiveRecord::Base
-  scope :rotting, where(rotting: true)
-  scope :fresh, where("age < 20")
-  scope :recent, order("created_at DESC").limit(3)
+  # scope :rotting, where(rotting: true)
+  # scope :fresh, where("age < 20")
+  # scope :recent, order("created_at DESC").limit(3)
 
   before_save :make_rotting
+  has_one :brain
 
   def make_rotting
     if age > 20             # Doesn't use 'self' because we are only reading
