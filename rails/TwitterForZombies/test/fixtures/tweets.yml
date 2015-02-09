@@ -1,0 +1,9 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  zombie_id: 
+  message: MyString
+
+two:
+  zombie_id: 
+  message: MyString
