@@ -8,6 +8,9 @@ class Zombie < ActiveRecord::Base
   has_one :brain, dependent: :destroy
   delegate :flavor, to: :brain, prefix: true, allow_nil: true
 
+  has_many :assignments
+  has_many :roles, through: :assignments
+
   # def brain_flavor
   #   if brain.flavor == nil
   #     "No brain"
