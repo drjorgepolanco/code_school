@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150209071828) do
+ActiveRecord::Schema.define(version: 20150209072242) do
 
   create_table "assignments", force: true do |t|
     t.integer  "zombie_id"
@@ -56,6 +56,7 @@ ActiveRecord::Schema.define(version: 20150209071828) do
     t.string   "email"
     t.boolean  "rotting",    default: false
     t.integer  "age"
+    t.string   "decomp"
   end
 
 end

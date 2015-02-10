@@ -1,15 +1,22 @@
 class TweetsController < ApplicationController
   before_action :set_tweet, only: [:show, :edit, :update, :destroy]
+  before_action :get_zombie
+
+  def get_zombie
+    @zombie = Zombie.find(params[:zombie_id])
+  end
+
 
   # GET /tweets
   # GET /tweets.json
   def index
-    @tweets = Tweet.all
+    @tweets = @zombie.tweets
   end
 
   # GET /tweets/1
   # GET /tweets/1.json
   def show
+    @tweet = @zombie.tweets.find(params[:id])
   end
 
   # GET /tweets/new

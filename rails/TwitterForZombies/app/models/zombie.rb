@@ -11,6 +11,8 @@ class Zombie < ActiveRecord::Base
   has_many :assignments
   has_many :roles, through: :assignments
 
+  has_many :tweets
+
   # def brain_flavor
   #   if brain.flavor == nil
   #     "No brain"

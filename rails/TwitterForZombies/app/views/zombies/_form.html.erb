@@ -23,6 +23,19 @@
     <%= f.label :age %><br>
     <%= f.number_field :age %>
   </div>
+  <div class="field">
+    <%= f.label :decomp, "fresh" %>
+    <%= f.radio_button :decomp, 'fresh', checked: true %>
+    <%= f.label :decomp, "rotting" %>
+    <%= f.radio_button :decomp, 'rotting' %>
+    <%= f.label :decomp, "stale" %>
+    <%= f.radio_button :decomp, 'stale' %>
+  </div>
+
+  <div class="field">
+    <%= f.label :decomp %><br>
+    <%= f.select :decomp, ['fresh', 'rotting', 'stale'] %>
+  </div>
   <div class="actions">
     <%= f.submit %>
   </div>

@@ -15,12 +15,18 @@
   <%= @zombie.age %>
 </p>
 
+<p>
+  <strong>Decomp:</strong>
+  <%= @zombie.decomp %>
+</p>
+
 <% unless @zombie.brain_flavor == nil %>
   <p>
     <strong>Brain Flavor:</strong>
     <%= @zombie.brain_flavor %>
   </p>
 <% end %>
+
 
 <%= link_to 'Edit', edit_zombie_path(@zombie) %> |
 <%= link_to 'Back', zombies_path %>
