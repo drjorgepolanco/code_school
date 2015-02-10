@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Utility Methods</title>
+</head>
+<body>
+
+  <!-- 4.2 -->
+    <!-- Ajax & JSON Review -->
+  <div class="favorite">
+    <h3>Favorite</h3>
+    <img src="">
+    <p></p>
+    <button>Show Favorite</button>
+  </div>
+
+  <!-- 4.* Using $.each() -->
+  <button>Show Deals</button>
+  <h2>Current Deals</h2>
+  <div class="deal-0">
+    <h3 class="name"></h3>
+    <p class="price"></p>
+  </div>
+
+  <div class="deal-1">
+    <h3 class="name"></h3>
+    <p class="price"></p>
+  </div>
+
+  <div class="deal-2">
+    <h3 class="name"></h3>
+    <p class="price"></p>
+  </div>
+
+  <!-- 4.6 Using $.map() I -->
+  <button class="update-available-flights">Get Times</button>
+  <div class="flights">
+    <ul class="flight-times">
+
+    </ul>
+  </div>
+
+
+
+<script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+<script>
+
+// ===========
+// =EXERCISES=
+// ===========
+
+
+// -----------------------------------------------------------------------------
+// 4.2 Utility Functions
+// ---------------------
+
+// -----------------------------------------------------------------------------
+// Ajax & JSON Review (1 JSON object)
+
+{
+  image: "images/paris.png",
+  name: "Paris, France"
+}
+
+$('button').on('click', function () {
+  $.ajax('/cities/favorite/1', {
+    contentType: 'application/json',
+    dataType: 'json',
+    success: function (response) {
+      var favorite = $('.favorite');
+      favorite.find('p').html(response.name);
+      favorite.find('img').attr('src', response.image);
+    }
+  });
+});
+
+// -----------------------------------------------------------------------------
+// $.each(collection, function(<index>, <object>) {}) <-- parameters switches compared with $.map
+
+// Multiple responses from JSON (An Array of Objects)
+
+[
+  {
+    image: "images/paris.png",
+    name: "Paris, France"
+  },
+  {
+    image: "images/london.png",
+    name: "London, UK"
+  },
+  {
+    image: "images/madrid.png",
+    name: "Madrid, Spain"
+  }
+]
+
+$('button').on('click', function () {
+  $.ajax('/cities/favorite/1', {
+    contentType: 'application/json',
+    dataType: 'json',
+    success: function (response) {
+      $.each(response, function(index, city) {
+        var favorite = $('.favorite-' + index);
+        favorite.find('p').html(city.name);
+        favorite.find('img').attr('src', city.image);
+      });
+    }
+  });
+});
+
+// -----------------------------------------------------------------------------
+// $.map(collection, function(<object>, <index>) {}); <-- parameters switches compared with $.each
+
+// Basic Example
+var myNumbers = [1, 2, 3, 4];
+var newNumbers = $.map(myNumbers, function(item, index) { return item + 1} );
+
+myNumbers;   // [1, 2, 3, 4]
+newNumbers;  // [2, 3, 4, 5]
+
+
+// Transforming an Array of Objects into HTML
+
+[
+  {
+    name: "JFK - New York, NY",
+    status: "Departing Location"
+  },
+  {
+    name: "DEN - Denver, CO",
+    status: "Connecting Flight"
+  },
+  {
+    name: "SFO - San Francisco, CA",
+    status: "Destination"
+  }
+]
+
+$('.update-status').on('click', function() {
+  $.getJSON('/status', function(response) {
+    var statusElements = $.map(response, function(status, i) {
+      var listItem = $('<li></li>');
+      $('<h3>' + status.name + '</h3>').appendTo(listItem);
+      $('<p>' + status.status + '</p>').appendTo(listItem);
+      return listItem;
+    });
+
+    // $('.status-list').html(statusElements); // <---  less efficiency  <---
+                                               //                            |
+    $('.status-list').detach()                 // <---                       | same responses
+                     .html(statusElements)     //     | more efficiency      |
+                     .appendTo('.status');     // <---                   <---
+  });
+});
+// .detach() Removes an element from the DOM, preserving all data and events.
+//           This is useful to minimize DOM insertions with multiple html elements.
+
+
+// -----------------------------------------------------------------------------
+// 4.* Using $.each()
+// ------------------
+
+// AJAX response
+[
+  {
+    name: 'Paris, France',
+    price: 550
+  },
+  {
+    name: 'Madrid, Spain',
+    price: 460
+  },
+  {
+    name: 'New York, United States',
+    price: 334
+  }
+]
+
+
+// -----------------------------------------------------------------------------
+// 4.3 Using $.each() I
+// --------------------
+/*
+Our site has a popup deals page. We need to write the javascript that will load 
+the current available deals. Let's start out by looping over the response with the 
+$.each() function. Within this loop, console.log() each item for now to get an 
+idea of what the data looks like.
+*/
+$('button').on('click', function() {
+  $.ajax('/cities/deals', {
+    success: function(response) {
+      // your code goes here
+      $.each(response, function(index, dealItem) {
+        console.log(dealItem);
+      })
+    }
+  });
+})
+
+
+// -----------------------------------------------------------------------------
+// 4.4 Using $.each() II
+// ---------------------
+/*
+Ok, now that we can see what our data looks like, lets go ahead and put the data 
+into our html. We have HTML already created for each deal, so we can use the index 
+within the each loop to locate the deal DOM node to update. Update the name and 
+the price of each deal.
+*/
+$('button').on('click', function() {
+  $.ajax('/cities/deals', {
+    success: function(response) {
+      $.each(response, function (index, dealItem) {
+        // Your code goes here
+        var deal = $('.deal-' + index);
+        deal.find('.name').html(dealItem.name);
+        deal.find('.price').html(dealItem.price);
+      });
+    }
+  });
+});
+
+
+// -----------------------------------------------------------------------------
+// 4.5 Using $.each() II
+// ---------------------
+/*
+Lets clean up our code a bit. This AJAX call is pretty simple, and it only has a 
+success callback, so lets use the $.getJSON() function to make the call instead.
+*/
+$('button').on('click', function () {
+  $.getJSON('/cities/deals', function (response) {
+    $.each(response, function (index, dealItem) {
+      var deal = $('.deal-' + index);
+      deal.find('.name').html(dealItem.name);
+      deal.find('.price').html(dealItem.price);
+    })
+  });
+});
+
+
+// -----------------------------------------------------------------------------
+// 4.* Using $.map()
+// -----------------
+
+// AJAX response
+[
+  {
+    flightNumber: '308',
+    time: 'April 3rd, 5:29pm'
+  },
+  {
+    flightNumber: '298',
+    time: 'April 3rd, 2:46am'
+  },
+  {
+    flightNumber: '421',
+    time: 'April 3rd, 3:35pm'
+  }
+]
+
+
+// -----------------------------------------------------------------------------
+// 4.6 Using $.map() I
+// -------------------
+/*
+Someone thought it would be a great idea to have a page which shows flights that 
+are running late. You're going to need to use the $.map() function, lets first 
+console.log() the data being passed to the $.map() callback to see what we're 
+dealing with.
+*/
+
+$('.update-available-flights').on('click', function() {
+  $.getJSON('/flights/late', function(response) {
+    // Your code goes here
+    $.map(response, function (flight, index) {
+      console.log(flight);
+    })
+  });
+});
+
+
+// -----------------------------------------------------------------------------
+// 4.7 Using $.map() II
+// --------------------
+/*
+Now you need to create the array of html elements. Create an array of li elements, 
+each with the flightNumber and the time from the ajax result. Insert the resulting 
+array into the .flight-times unordered list element.
+*/
+
+$('.update-available-flights').on('click', function() {
+  $.getJSON('/flights/late', function(result) {
+    var flightElements = $.map(result, function(flightItem, index){
+      // Your code goes here
+      var flights = $("<li></li>"); 
+      $('<p>Flight Number: ' + flightItem.flightNumber + '</p>').appendTo(flights);
+      $('<p>Time: ' + flightItem.time + '</p>').appendTo(flights);
+      return flights;
+    });
+    $('.flight-times').html(flightElements);
+  });
+});
+
+
+// -----------------------------------------------------------------------------
+// 4.8 detach()
+// ------------
+/*
+Let's take a minute to make our previous code a bit more efficient. Use the 
+.detach() method to remove the .flight-times list element from the DOM before 
+you insert the new list items. Then, re-insert the .flight-times element back 
+into the .flights element.
+*/
+
+$('.update-available-flights').on('click', function() {
+  $.getJSON('/flights/late', function(result) {
+    var flightElements = $.map(result, function(flightItem, index){
+      // Your code goes here
+      var flights = $("<li></li>"); 
+      $('<p>Flight Number: ' + flightItem.flightNumber + '</p>').appendTo(flights);
+      $('<p>Time: ' + flightItem.time + '</p>').appendTo(flights);
+      return flights;
+    });
+    $('.flight-times').detach().html(flightElements).appendTo('.flights');
+  });
+});
+
+
+
+
+
+
+</script>
+</body>
+</html>
