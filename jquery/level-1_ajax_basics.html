@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Ajax Basics</title>
+  </head>
+  <body>
+
+<!-- 1.6 Ajax Data -->
+<div id="tour" data-location="london">
+  <button>Get Photos</button>
+  <ul class="photos">
+
+  </ul>
+</div>
+
+
+<!-- 1.8 - 1.11 -->
+<div id="tour" data-location="london">
+  <button>Get Photos</button>
+  <ul class="photos">
+
+  </ul>
+</div>
+
+<script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+<script>
+
+// Version One
+// $.ajax(url[, settings])
+$('.confirmation').on('click', 'button', function () {
+  s.ajax('http://example.org/confirmation.html', {
+    success: function (response) {
+      $('.ticket').html(response).slideDown();
+    }
+  });
+});
+
+// Version Two
+// $.get(url, success)
+$.get('confirmation.html', function (response) {
+  $('.ticket').html(response).slideDown();
+});
+
+
+// FULL VERSION
+$('.confirmation').on('click', 'button', function () {
+  s.ajax('confirmation.html', {
+    success: function (response) {
+      $('.ticket').html(response).slideDown();
+    },
+    // Error handling
+    error: function (request, errorType, errorMessage) {
+      alert('Error: ' + errorType + ' with message: ' + errorMessage);
+    },
+    // Set timeout = After 3 seconds will call error callback
+    timeout: 3000,
+    beforeSend: function () { // <-- Runs before the AJAX request
+      $('.confirmation').addClass('is-loading'); // To tell the user an AJAX req has been fired up
+    },
+    complete: function () {   // <-- Runs after success of error
+      $('.confirmation').removeClass('is-loading');
+    },
+    // data: { "confNum": 1234 }
+    // <div class='ticket' data-confNum='1234'>
+    data: { "confNum": $('.ticket').data("confNum") }
+  });
+});
+
+
+// ===========
+// =EXERCISES=
+// ===========
+
+
+// -----------------------------------------------------------------------------
+// 1.6 Ajax Data
+// -------------
+/*
+You've decided you only want to get photos of london. Use the data option of the 
+$.ajax function to pass a location option. Get the location from the data-location 
+on the #tour element using the data method.
+*/
+
+$("#tour").on("click", "button", function () {
+  $.ajax("/photos.html", {
+    success: function (response) {
+      $("#photos").html(response).fadeIn();
+    },
+    data: { "location": $(this).closest("#tour").data("location") }
+  });
+});
+
+
+// -----------------------------------------------------------------------------
+// 1.8 AJAX with Errors
+// --------------------
+
+/*
+Sometimes things go wrong. Maybe our server went down, or the traveler visiting 
+our page lost their internet connection and can no longer access our site.
+
+Let's account for this case by adding an error callback that will set the contents 
+of the .photos element to a message in an li element letting the traveler know that 
+something went wrong and to try again. You can write whatever you'd like for this 
+message. 
+*/
+
+var el = $("#tour");
+el.on("click", "button", function () {
+  $.ajax("/photos.html", {
+    success: function (response) {
+      $(".photos").html(response).fadeIn();
+    },
+    error: function (request, errorType, errorMessage) {
+      el.find(".photos").append("<li>Error: " + errorType + " with message: " + 
+                                errorMessage + ".<li>")
+    }
+  });
+});
+
+
+// -----------------------------------------------------------------------------
+// 1.9 Setting a Timeout
+// ---------------------
+
+/*
+We've been hearing reports from our travelers that sometimes they'll click on 
+this button and nothing will happen - then a minute later they'll get a message
+saying There was a problem fetching the latest photos. Please try again.
+
+Update the $.ajax request to timeout in 3 seconds to prevent this.
+*/
+
+var el = $("#tour");
+el.on("click", "button", function () {
+  $.ajax("/photos.html", {
+    success: function (response) {
+      $('.photos').html(response).fadeIn();
+    },
+    error: function (request, errorType, errorMessage) {
+      el.find(".photos").append('<li>There was a problem fetching the latest photos. Please try again.</li>');
+    },
+    timeout: 3000
+  });
+});
+
+
+// -----------------------------------------------------------------------------
+// 1.10 More AJAX Callbacks
+// ------------------------
+
+/*
+Things are working fine, but we could make it better. While the server is
+responding, the traveler has no indication that anything is happening.
+
+Our designers have added some special styling to account for this. Before the 
+ajax command is sent, add a class of is-fetching to our #tour element, then 
+remove this class after the request is complete.
+*/
+
+var el = $("#tour");
+el.on('click', 'button', function () {
+  $.ajax('/photos.html', {
+    success: function (response) {
+      $('.photos').html(response).fadeIn();
+    },
+    error: function (request, errorType, errorMessage) {
+      el.find('.photos').append('<li>There was a problem fetching the latest photos. Please try again.</li>');
+    },
+    timeout: 3000,
+    beforeSend: function () {
+      el.addClass('is-fetching');
+    },
+    complete: function () {
+      el.removeClass('is-fetching');
+    }
+  });
+});
+
+
+// -----------------------------------------------------------------------------
+// 1.11 Event Delegation
+// ---------------------
+
+/*
+One other thing we did in Try jQuery was make the labels show up over the photos 
+when we moused over them. For some reason these are no longer working.
+
+It looks like we're trying to define our mouseover events when the DOM loads, but
+since we're loading them with Ajax it's not finding them. Update these to use event
+delegation, ensuring they'll work if we load them via Ajax.
+*/
+
+$(document).ready(function () {
+  function showPhotos() {
+    $(this).find('span').slideToggle();
+  }
+  $('.photos').on('mouseenter', 'li', showPhotos)
+              .on('mouseleave', 'li', showPhotos);
+
+  var el = $('#tour');
+  el.on("click", "button", function () {
+    $.ajax("/photos.html", {
+      success: function (response) {
+        $('.photos').html(response).fadeIn();
+      },
+      error: function () {
+        $('.photos').html('<li>There was a problem fetching the latest photos. Please try again.</li>');
+      },
+      timeout: 3000,
+      beforeSend: function () {
+        el.addClass('is-fetching');
+      },
+      complete: function () {
+        el.removeClass('is-fetching');
+      }
+    });
+  });
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</script>
+</body>
+</html>
