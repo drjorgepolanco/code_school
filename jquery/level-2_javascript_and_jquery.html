@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Ajax Basics</title>
+</head>
+<body>
+
+
+
+<script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+<script>
+
+// ===========
+// =EXERCISES=
+// ===========
+
+
+// -----------------------------------------------------------------------------
+// 2.3 Refactor to Objects
+// -----------------------
+/*
+The level1.js tab shows our code as it stood at the end of level 1, but isn't 
+being loaded into the page. We have some pretty deep nesting of functions, and 
+that makes our code a little tough to read. Let's start refactoring it into a 
+JavaScript object. For starters, create a new function named init within our 
+tour object.
+
+Next, call the init method on the tour object from within the $(document).ready 
+function. Lastly, move the existing code that's run on $(document).ready within 
+level1.js into our new init method. This should be functionally the same, but 
+now our code is moved into the tour object.
+*/
+
+var tour = {
+  init: function() {
+    $("#tour").on("click", "button", function() {
+      $.ajax('/photos.html', {
+        data: {location: $("#tour").data('location')},
+        success: function(response) {
+          $('.photos').html(response).fadeIn();
+        },
+        error: function() {
+          $('.photos').html('<li>There was a problem fetching the latest photos. Please try again.</li>');
+        },
+        timeout: 3000,
+        beforeSend: function() {
+          $('#tour').addClass('is-fetching');
+        },
+        complete: function() {
+          $('#tour').removeClass('is-fetching');
+        }
+      });
+    });
+  }
+}
+
+$(document).ready(function() {
+  tour.init();
+});
+
+
+// -----------------------------------------------------------------------------
+// 2.4 Event Handler Refactor
+// --------------------------
+/*
+Well, we moved our big block of code around, but it's still tough to read. Let's 
+move our $.ajax call from within this event handler callback to a new fetchPhotos 
+key on the tour object. Also, update the call to on click to use this new fetchPhotos 
+function.
+*/
+
+var tour = {
+  init: function() {
+    $("#tour").on("click", "button", this.fetchPhotos);
+  },
+  fetchPhotos: function() {
+    $.ajax('/photos.html', {
+      data: {location: $("#tour").data('location')},
+      success: function(response) {
+        $('.photos').html(response).fadeIn();
+      },
+      error: function() {
+        $('.photos').html('<li>There was a problem fetching the latest photos. Please try again.</li>');
+      },
+      timeout: 3000,
+      beforeSend: function() {
+        $('#tour').addClass('is-fetching');
+      },
+      complete: function() {
+        $('#tour').removeClass('is-fetching');
+      }
+    });
+  }
+}
+
+$(document).ready(function() {
+  tour.init();
+});
+
+
+// Refactoring to Functions
+
+// !! Inside AJAX callbacks, this is set to the AJAX settings !! // >>>------------------------>>>
+                                                                 //                              |
+function Confirmation(el) {                                      //                              |
+  this.el = el;                                                  //                              |
+  this.ticket = this.el.find('.ticket');                         //                              |
+  var confirmation = this;    // <-- Allows us to set the value of "this" inside our callbacks ->|
+                                                                 //                              |
+  this.loadConfirmation = function() {                           //                              |
+    $.ajax('confirmation.html', {                                //                              |
+      timeout: 3000,                                             //                              |
+      context: confirmation,  // <-- Allows us to set the value of "this" inside our callbacks ->|
+      success: function(response) {                              //                              |
+        this.ticket.html(response).slideDown();  // <<<----------------------------------------<<<
+      }
+    });
+  }
+  this.showBoardingPass = function(event) {
+    event.preventDefault();
+    $(this).hide();
+    confirmation.el.find('.boarding-pass').show();
+  }
+
+  this.el.on('click', 'button', this.loadConfirmation);
+  this.el.on('click', '.view-boarding-pass', this.showBoardingPass);
+}
+
+$(document).ready(function() {
+  var paris = new Confirmation($('#paris'));
+  var london = new Confirmation($('#london'));
+})
+
+</script>
+</body>
+</html>
