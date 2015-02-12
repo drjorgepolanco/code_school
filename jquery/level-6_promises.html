@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Promises</title>
+</head>
+<body>
+
+  <!-- 6.2 Promises -->
+  <div class="favorite">
+    <h3>Favorite</h3>
+    <img src="/images/paris.png">
+    <p class="loc">Paris, France</p>
+    <p class="weather"></p>
+    <button>Show Weather</button>
+  </div>
+
+  <!-- Calling 2 promises one after the other -->
+  <li data-loc="london,uk">
+    London, UK
+    <button>More Info</button>
+    <div class="results"></div>
+  </li>
+
+  <li data-loc="paris, france">
+    Paris, France
+    <button>More Info</button>
+    <div class="results"></div>
+  </li>
+
+  <li data-loc="madrid, spain">
+    Madrid, Spain
+    <button>More Info</button>
+    <div class="results"></div>
+  </li>
+
+
+<script type="text/javascript" 
+        src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js">
+</script>
+
+<script>
+
+// ===========
+// =EXERCISES=
+// ===========
+
+// -----------------------------------------------------------------------------
+// 6.2 Promises
+// ------------
+
+// Response
+{
+  weather_code: 462,
+  weather: "Partly Cloudy"
+}
+
+// Our current code, not using a promise
+$('button').on('click', function() {
+  var location = $('.loc').text();
+  $.ajax('/weather', {
+    data: { q: location },
+    success: function(response) {
+      $('.weather').text(response.weather);
+    }
+  });
+});
+
+// What if we wanted to extract this AJAX call and use it in multiple pages on the site?
+
+// --> PROMISES
+
+// Starting to build a 'promise' object
+var Weather = {
+  today: function(location) {
+    var promise = $.ajax('/weather', {  // <---  all $.ajax() requests returns an
+      data: { q: location }             //     | object of type 'promise', so we set  
+    });                                 // <---  promise to be equal to the ajax response             
+    return promise;
+  }
+}
+
+// Using the promise in our code
+$('button').on('click', function() {
+  var location = $('.loc').text();
+  var todayPromise = Weather.today(location);
+  todayPromise.done(function(response) {  // <-- 'done' works like the AJAX 'success'
+    $('.weather').text(response.weather); // if the request comes back successfully,
+  });                                     // by default will call the 'done' method
+});                                       // on that promise, if it's defined!
+
+
+// But what if we don't know that we have to call 'weather' on 'response'
+// Can we just call 'response' and get the same as 'response.weather'?
+
+// --------------------
+// Optimal .done method
+// --------------------
+
+// We need a way to intercept the response, inside our promise (Weather), and 
+// modify it before the .done method gets called.
+
+// using $.Deferred()
+// ------------------
+var Weather = {
+  today: function(location) {
+    var promise = $.Deferred(); // Deferred allows us to create a promise from scratch
+    $.ajax('/weather', {
+      data: { q: location },
+      success: function(response) {
+        promise.resolve(response.weather); // 'resolve' triggers 'done'
+      }
+    });
+    return promise;
+  }
+}
+
+// Now the Weather object is responsible of parsing the JSON response
+
+$('button').on('click', function() {
+  var location = $('.loc').text();
+  var todayPromise = Weather.today(location);
+  todayPromise.done(function(response) {
+    $('.weather').text(response); 
+  });                                  
+});
+
+
+// Recap *
+// -----
+
+// Custom promise with $.Deferred()
+
+var promise = $.Deferred(); // <-- jQuery method for creating a promise object
+
+//                         calls the done callback
+promise.resolve(value); /* ----------------------> */ promise.done(function(value){});
+
+//                         calls the fail callback
+promise.reject(value);  /* ----------------------> */ promise.fail(function(value){});
+
+
+// .reject triggers the .fail callback
+// -----------------------------------
+var Weather = {
+  today: function(location) {
+    var promise = $.Deferred();
+    $.ajax('/weather', {
+      data: { q: location },
+      success: function(response) {
+        promise.resolve(response.weather); // 'resolve' triggers 'done'
+      },
+      error: function() {
+        var error = 'invalid location';
+        promise.reject(error);
+      }
+    });
+    return promise;
+  }
+}
+
+$('button').on('click', function() {
+  var location = $('.loc').text();
+  var todayPromise = Weather.today(location);
+  todayPromise.done(function(response) {
+    $('.weather').text(result);
+  }).fail(function(error) {
+    console.log(error);
+  });
+});
+
+
+// Calling 2 promises one after the next
+// -------------------------------------
+// The problem with this approach is that the AJAX response won't always come in
+// the exact same order, so it won't neccessarily always look the same in the site.
+
+$('button').on('click', function() {
+  var loc = $(this).parent().data('loc');
+  var resultsDiv = $(this).parent().find('.results').empty();
+
+  Weather.today(loc).done(function(weatherResult) {
+    resultsDiv.append(weatherResult);
+  });
+
+  City.find(loc).done(function(cityResult) {
+    resultsDiv.append(cityResult);
+  });
+});
+
+// To resolve this issue we use:
+
+// ---------------------
+// $.when() and $.then()
+// ---------------------
+
+// $.when(<promise1>, <promise2>...) <-- This can't be an array, only promises separated by commas
+
+// .then(function(promise1Data, promise2Data) {}); <-- Callback data is in the same order as promises
+
+$('button').on('click', function() {
+  var loc = $(this).parent().data('loc');
+  var resultsDiv = $(this).parent().find('.results').empty();
+
+  $.when(Weather.today(loc), City.find(loc)).then(function(weatherResult, cityResult) {
+    resultsDiv.append(cityResult);
+    resultsDiv.append(weatherResult);
+  });
+});
+
+
+// -----------------------------------------------------------------------------
+// 6.3 Reusable AJAX
+// -----------------
+/*
+You have a piece of javascript code which uses an AJAX call to find the vacation 
+price of cities. This code may be useful to use in a few different parts of your 
+site. Lets go ahead and rewrite this to make it reusable.
+
+Create a Vacation JavaScript object which contains a getPrice function which takes 
+one argument: location. Add the AJAX call currently in the application.js file to 
+the getPrice function. Make sure this function returns a promise. Our "Update Price" 
+button won't call it yet, but we'll do that next.
+*/
+var Vacation = {
+  getPrice: function(location) {
+    var promise = $.ajax('/vacation/prices', {
+      data: {q: location},
+      success: function(result){
+        $('.price').text(result.price);
+      }
+    });
+    return promise;
+  }
+}
+
+
+// -----------------------------------------------------------------------------
+// 6.4 Using the Vacation
+// ----------------------
+/*
+Lets edit the original code to use the Vacation object we just created. Add a 
+.done() callback function to your Vacation object that will run the same function 
+as our current success callback.
+*/
+// $(document).ready(function() {
+//   $('button').on('click', function(){
+//     var location = $('.location').text();
+//     $.ajax('/vacation/prices', {
+//       data: {q: location},
+//       success: function(result){
+//         $('.price').text(result.price);
+//       }
+//     });
+//   });
+// });
+$(document).ready(function() {
+  $('button').on('click', function(){
+    var location = $('.location').text();
+    var currentPrice = Vacation.getPrice(location);
+    currentPrice.done(function(response) {
+      $('.price').text(response.price);
+    });
+  });
+});
+
+
+// -----------------------------------------------------------------------------
+// 6.5 Simplifying the result
+// --------------------------
+/*
+Great! Lets make it a little easier to use our Vacation object by creating a 
+custom promise and handling the result output ourselves. That way instead of 
+needing result.price in the 'application.js', you'll be able to just use result.
+
+Use $.Deferred() to create your own promise (set the promise variable with this), 
+and use the .resolve() function to pass the result to the .done() callback.
+
+The demo for this won't work yet because we're still looking for result.price, 
+but we'll change that next.
+*/
+// var Vacation = {
+//   getPrice: function(location){
+//    var promise = $.ajax('/vacation/prices', {
+//      data: {q: location}
+//    });
+//    return promise;
+//   }
+// }
+var Vacation = {
+  getPrice: function(location){
+   var promise = $.Deferred(); 
+   $.ajax('/vacation/prices', {
+     data: {q: location},
+     success: function(response) {
+       promise.resolve(response.price);
+     }
+   });
+   return promise;
+  }
+}
+
+
+// -----------------------------------------------------------------------------
+// 6.6 The Simple Result
+// ---------------------
+/*
+You're almost finished! All that's left is to change result.price to result in 
+your application.js.
+*/
+// $(document).ready(function() {
+//   $('button').on('click', function(){
+//     var location = $('.location').text();
+//     Vacation.getPrice(location).done(function(result){
+//       $('.price').text(result.price);
+//     });
+//   });
+// });
+$(document).ready(function() {
+  $('button').on('click', function(){
+    var location = $('.location').text();
+    Vacation.getPrice(location).done(function(result){
+      $('.price').text(result);
+    });
+  });
+});
+
+
+// -----------------------------------------------------------------------------
+// 6.7 Promising Errors
+// --------------------
+/*
+We just realized: what happens if an error is returned with our ajax call? Our 
+custom promise isn't setup to handle errors. We need to add an error handler that 
+can reject your promise. Go ahead and create this error handler and make sure to 
+pass some sort of error message to the reject() function.
+*/
+// var Vacation = {
+//   getPrice: function(location){
+//     var promise = $.Deferred();
+//     $.ajax({
+//       url: '/vacation/prices',
+//       data: {q: location},
+//       success: function(result){
+//         promise.resolve(result.price);
+//       }
+//     });
+//     return promise;
+//   }
+// }
+var Vacation = {
+  getPrice: function(location){
+    var promise = $.Deferred();
+    $.ajax({
+      url: '/vacation/prices',
+      data: {q: location},
+      success: function(result){
+        promise.resolve(result.price);
+      },
+      error: function() {
+        var error = 'invalid location';
+        promise.reject(error);
+      }
+    });
+    return promise;
+  }
+}
+
+
+// -----------------------------------------------------------------------------
+// 6.8 Fail()
+// ----------
+/*
+Finish up handling errors by adding a fail handler to your application.js that 
+logs the error to the console.
+*/
+// $(document).ready(function() {
+//   $('button').on('click', function(){
+//     var location = $('.location').text();
+//     Vacation.getPrice(location).done(function(result){
+//       $('.price').text(result);
+//     });
+//   });
+// });
+
+$(document).ready(function() {
+  $('button').on('click', function(){
+    var location = $('.location').text();
+    Vacation.getPrice(location).done(function(result){
+      $('.price').text(result);
+    }).fail(function(error) {
+      console.log(error);
+    });
+  });
+});
+
+
+// -----------------------------------------------------------------------------
+// 6.9 When() and Then()
+// ---------------------
+/*
+You have two AJAX calls that are used to render an html page. The problem is that 
+since the data gets back at different times, your html flickers and elements show 
+up in different orders.
+
+Use $.when() and .then() to refactor these two calls so that html gets rendered 
+at the same time.
+*/
+// $(document).ready(function() {
+//   $('button').on('click', function(){
+//     var tour = $(this).parent();
+//     var location = tour.data('location');
+//     var resultDiv = tour.find('.results').empty();
+//     Vacation.getPrice(location).done(function(priceResult){
+//       $('<p>$'+priceResult+'</p>').appendTo(resultDiv);
+//     });
+
+//     Photo.getPhoto(location).done(function(photoResult){
+//       $('<img />').attr('src', photoResult).appendTo(resultDiv);
+//     });
+//   });
+// });
+
+$(document).ready(function() {
+  $('button').on('click', function(){
+    var tour = $(this).parent();
+    var location = tour.data('location');
+    var resultDiv = tour.find('.results').empty();
+
+    $.when(Vacation.getPrice(location), Photo.getPhoto(location))
+     .then(function(priceResult, photoResult) {
+      $('<p>$'+priceResult+'</p>').appendTo(resultDiv);
+      $('<img />').attr('src', photoResult).appendTo(resultDiv);
+     });
+  });
+});
+
+</script>
+</body>
+</html>
