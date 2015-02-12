@@ -42,13 +42,15 @@
 
 
 
-<script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+<script type="text/javascript" 
+        src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js">
+</script>
+
 <script>
 
 // ===========
 // =EXERCISES=
 // ===========
-
 
 // -----------------------------------------------------------------------------
 // 4.2 Utility Functions
@@ -62,11 +64,11 @@
   name: "Paris, France"
 }
 
-$('button').on('click', function () {
+$('button').on('click', function() {
   $.ajax('/cities/favorite/1', {
     contentType: 'application/json',
     dataType: 'json',
-    success: function (response) {
+    success: function(response) {
       var favorite = $('.favorite');
       favorite.find('p').html(response.name);
       favorite.find('img').attr('src', response.image);
@@ -94,11 +96,11 @@ $('button').on('click', function () {
   }
 ]
 
-$('button').on('click', function () {
+$('button').on('click', function() {
   $.ajax('/cities/favorite/1', {
     contentType: 'application/json',
     dataType: 'json',
-    success: function (response) {
+    success: function(response) {
       $.each(response, function(index, city) {
         var favorite = $('.favorite-' + index);
         favorite.find('p').html(city.name);
@@ -210,7 +212,7 @@ the price of each deal.
 $('button').on('click', function() {
   $.ajax('/cities/deals', {
     success: function(response) {
-      $.each(response, function (index, dealItem) {
+      $.each(response, function(index, dealItem) {
         // Your code goes here
         var deal = $('.deal-' + index);
         deal.find('.name').html(dealItem.name);
@@ -229,7 +231,7 @@ Lets clean up our code a bit. This AJAX call is pretty simple, and it only has a
 success callback, so lets use the $.getJSON() function to make the call instead.
 */
 $('button').on('click', function () {
-  $.getJSON('/cities/deals', function (response) {
+  $.getJSON('/cities/deals', function(response) {
     $.each(response, function (index, dealItem) {
       var deal = $('.deal-' + index);
       deal.find('.name').html(dealItem.name);
@@ -273,7 +275,7 @@ dealing with.
 $('.update-available-flights').on('click', function() {
   $.getJSON('/flights/late', function(response) {
     // Your code goes here
-    $.map(response, function (flight, index) {
+    $.map(response, function(flight, index) {
       console.log(flight);
     })
   });
@@ -325,11 +327,6 @@ $('.update-available-flights').on('click', function() {
     $('.flight-times').detach().html(flightElements).appendTo('.flights');
   });
 });
-
-
-
-
-
 
 </script>
 </body>

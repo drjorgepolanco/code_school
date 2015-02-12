@@ -7,13 +7,15 @@
 
 
 
-<script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+<script type="text/javascript" 
+        src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js">
+</script>
+
 <script>
 
 // ===========
 // =EXERCISES=
 // ===========
-
 
 // -----------------------------------------------------------------------------
 // 2.3 Refactor to Objects
@@ -169,7 +171,7 @@ $(document).ready(), which you can uncomment once you've implemented.
 */
 function Tour(cost) {
   console.log("A new Tour was created");
-  this.cost = function (nights) {
+  this.cost = function(nights) {
     console.log(cost * nights)
   }
 }
