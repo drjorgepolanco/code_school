@@ -68,7 +68,7 @@ app.get('/tweets/:username', function(req, response) {
 
 // 1. Install a templating library: 'ejs'
 
-// $ npm install --sabe ejs
+// $ npm install --save ejs
 
 // my_app/package.json
 "dependencies": {
@@ -287,7 +287,8 @@ then returns the JSON.
 3. Create a route for GET requests to / (root path). Remember, the callback 
    function takes two arguments: a request req and a response res.
 
-4. In our new route, issue a request to searchURL and pipe the results into the response.
+4. In our new route, issue a request to searchURL and pipe the results into the 
+   response.
 
 5. Finally, tell app to listen on port 8080.
 */
