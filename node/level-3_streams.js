@@ -10,25 +10,25 @@
 // The 'request' object is a 'readable' stream and the 'response' is writeable
 // We read data from the request and write data to the response.
 
-//                        readable
-http.createServer(function(request, response){})
-//                                  writeable
+//                         readable
+http.createServer(function (request, response){})
+//                                   writeable
 
 // How to READ from the request?
 
 // * Remember: request is a Readable Stream and inherits from EventEmitter
 
 // Let's print what we receive from the request:
-http.createServer(function(request, response) {
+http.createServer(function (request, response) {
   response.writeHead(200);
-  request.on('readable', function() {
+  request.on('readable', function () {
     var chunk = null;
     while(null !== (chunk = request.read())) { // if the request is not null
       // console.log(chunk.toString());
       response.write(chunk); // <--- response.write converts toString behind the scenes
     }
   });
-  request.on('end', function() {
+  request.on('end', function () {
     response.end();
   });
 }).listen(8080);
@@ -40,7 +40,7 @@ http.createServer(function(request, response) {
 // 'pipe' handles all event listening and chunk reading behind the scenes
 // ------
 
-http.createServer(function(request, response) {
+http.createServer(function (request, response) {
   response.writeHead(200);
   request.pipe(response); // <-- this single line replaces all previous code!!
 }).listen(8080);
@@ -68,11 +68,11 @@ file.pipe(newFile);
 var fs = require('fs');
 var http = require('http');
 
-http.createServer(function(request, response) {
+http.createServer(function (request, response) {
   var newFile = fs.createWriteStream('readme_copy.md');
   request.pipe(newFile);
 
-  request.on('end', function() {
+  request.on('end', function () {
     response.end('uploaded!');
   });
 }).listen(8080);
@@ -97,12 +97,12 @@ http.createServer(function(request, response) {
 var http = require('http');
 var fs = require('fs');
 
-http.createServer(function(request, response) {
+http.createServer(function (request, response) {
   var newFile = fs.createWriteStream("readme_copy.md");
   // We need to know what the entire size of the file is:
   var fileBytes = request.headers['content-length'];
   var uploadedBytes = 0;
-  request.on('readable', function() {
+  request.on('readable', function () {
     var chunk = null;
     while(null !== (chunk = request.read())) {
       uploadedBytes += chunk.length;
@@ -135,7 +135,7 @@ Don't forget to call toString() on the data before printing it.
 var fs = require('fs');
 var file = fs.createReadStream('fruits.txt');
 
-file.on('readable', function() {
+file.on('readable', function () {
   var chunk = null;
   while(null !== (chunk = file.read())) {
     console.log(chunk.toString());
@@ -181,7 +181,7 @@ var destFile = fs.createWriteStream('destination.txt');
 // file.pipe(destFile);
 file.pipe(destFile, { end: false });
 
-file.on('end', function(){
+file.on('end', function () {
   destFile.end('Finished!');
 });
 
@@ -197,7 +197,7 @@ Use pipe() to send index.html to the response.
 var fs = require('fs');
 var http = require('http');
 
-http.createServer(function(request, response) {
+http.createServer(function (request, response) {
   response.writeHead(200, {'Content-Type': 'text/html'});
 
   var file = fs.createReadStream('index.html');

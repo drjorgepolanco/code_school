@@ -7,7 +7,7 @@
 // -----------------------
 
 // custom_hello.js
-var hello = function() {
+var hello = function () {
   console.log('hello!');
 }
 
@@ -15,7 +15,7 @@ module.exports = hello;
 
 
 // custom_goodbye.js
-exports.goodbye = function() { // <-- 'exports' define what require returns
+exports.goodbye = function () { // <-- 'exports' define what require returns
   console.log('bye!');
 }
 
@@ -36,9 +36,9 @@ require('./custom_goodbye').goodbye();
 // -------------------------
 
 // my_module.js
-var foo = function() {}
-var bar = function() {}
-var baz = function() {}
+var foo = function () {}
+var bar = function () {}
+var baz = function () {}
 
 exports.foo = foo;
 exports.bar = bar;
@@ -63,8 +63,8 @@ var options = {
   path: '/',
   method: 'POST'
 }
-var request = http.request(options, function(response) {// <<-
-  response.on('data', function(data) { //                     |
+var request = http.request(options, function (response) {// <<-
+  response.on('data', function (data) { //                     |
     console.log(data);  // logs response body                 |
   });                   //                                    |
 });                     //                                    |
@@ -80,15 +80,15 @@ var http = require('http');
 
 var message = "Here's looking at you, kid.";
 
-var makeRequest = function(message) {
+var makeRequest = function (message) {
   var options = {
     host: 'localhost',
     port: 8080,
     path: '/',
     method: 'POST'
   }
-  var request = http.request(options, function(response) {
-    response.on('data', function(data) {                  
+  var request = http.request(options, function (response) {
+    response.on('data', function (data) {                  
       console.log(data);                 
     });                                                    
   });                                     
@@ -104,7 +104,7 @@ makeRequest("Here's looking at you, kid.");
 
 // make_request.js
 var http = require('http');
-var makeRequest = function(message) {
+var makeRequest = function (message) {
   ...
 }
 
@@ -143,7 +143,7 @@ var make_request = require('make_request'); // Search in node_modules directorie
 Notice the two different files: high_five.js on the left side and app.js on the 
 right. The code as it's written will not work, high_five.js isn't exporting anything.
 */
-var highfive = function() {
+var highfive = function () {
   console.log("smack!!");
 };
 // -->
@@ -166,8 +166,8 @@ out to its own my_request.js module.
 // my_request.js
 var http = require('http');
 
-var myRequest = function(message) {
-  var request = http.request('http://codeschool.com', function(response) {
+var myRequest = function (message) {
+  var request = http.request('http://codeschool.com', function (response) {
     response.pipe(process.stdout, { end: false });
   });
 
@@ -200,15 +200,15 @@ our functions.
 */
 
 // logger.js
-var warn = function(message) {
+var warn = function (message) {
   console.log("Warning: " + message);
 };
 
-var info = function(message) {
+var info = function (message) {
   console.log("Info: " + message);
 };
 
-var error = function(message) {
+var error = function (message) {
   console.log("Error: " + message);
 };
 
@@ -263,10 +263,3 @@ All we have to do is add one character to the beginning of the version number.
     "underscore": "~1.3.3"
   }
 }
-
-
-
-
-
-
-

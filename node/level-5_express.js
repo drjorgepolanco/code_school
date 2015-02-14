@@ -22,7 +22,7 @@ var express = require('express');
 var app = express();
 
 // Define an endpoint at the root route
-app.get('/', function(request, response) {
+app.get('/', function (request, response) {
   response.sendFile(__dirname + "/index.html");
 //               current directory
 });
@@ -41,7 +41,7 @@ app.listen(8080);
 var request = require('request');
 var url = require('url');
 
-app.get('/tweets/:username', function(req, response) {
+app.get('/tweets/:username', function (req, response) {
   var username = req.params.username;
   options = {
     protocol: 'http',
@@ -79,7 +79,7 @@ app.get('/tweets/:username', function(req, response) {
 // /Home/eric/my_app/views <-- default directory
 
 // app.js
-app.get('/tweets/:username', function(req, response) {
+app.get('/tweets/:username', function (req, response) {
   ...
   request(url, function(err, res, body) {
     var tweets = JSON.parse(body);
@@ -95,7 +95,7 @@ app.get('/tweets/:username', function(req, response) {
 // tweets.ejs
 <h1>Tweets for @<%= name %></h1>
 <ul>
-  <% tweets.forEach(function(tweet) { %>
+  <% tweets.forEach(function (tweet) { %>
     <li><%= tweet.text %></li>
   <% }); %>
 </ul>
@@ -120,7 +120,7 @@ by sending back a static HTML file.
 var express = require('express');
 var app = express();
 
-app.get('/tweets', function(req, response) {
+app.get('/tweets', function (req, response) {
   response.sendFile(__dirname + '/tweets.html');
 });
 
@@ -152,7 +152,7 @@ var quotes = {
   'hofstadter': 'Which statement seems more true: (1) I have a brain. (2) I am a brain.'
 };
 
-app.get('/quotes/:name', function(req, response) {
+app.get('/quotes/:name', function (req, response) {
   response.end(quotes[req.params.name]);
 });
 
@@ -185,7 +185,7 @@ var quotes = {
   'hofstadter': 'Which statement seems more true: (1) I have a brain. (2) I am a brain.'
 };
 
-app.get('/quotes/:name', function(req, res) {
+app.get('/quotes/:name', function (req, res) {
   var quote = quotes[req.params.name];
   var author = req.params.name;
   res.render('quote.ejs', {
@@ -268,7 +268,7 @@ var searchURL = url.format(options);
 
 var request = require('request');
 
-request(searchURL, function(err, res, body) {
+request(searchURL, function (err, res, body) {
   console.log(body);
 });
 
@@ -308,7 +308,7 @@ var searchURL = url.format(options);
 var express = require('express');
 var app = express();
 
-app.get('/', function(req, res) {
+app.get('/', function (req, res) {
   request(searchURL).pipe(res);
 });
 app.listen(8080);

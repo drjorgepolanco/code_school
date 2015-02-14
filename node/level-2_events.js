@@ -20,7 +20,7 @@ var logger = new EventEmitter();
 //* We want to be able to write 'listeners' so we can listen when those events occur
 
 // Listening for 'error' event:
-logger.on('error', function(message) {
+logger.on('error', function (message) {
   console.log('ERR: ' + message);
 });
 
@@ -33,7 +33,7 @@ logger.emit('error', 'Eggs Cracked');  // -> ERR: Eggs Cracked
 // Breaking it Down
 // ----------------
 
-http.createServer(function(request, response) { ... });
+http.createServer(function (request, response) { ... });
 //                                               |
 http.createServer([requestListener]) //           <<----------------------------------------<<
 // Returns a new web server object                                                            |
@@ -43,14 +43,14 @@ Class: http.Server //                                                           
 // This is an EventEmitter with the following events:                           |             |
 //                                                                              |             |
   Event: 'request' // <<------------------------------------------------------<<              |
-  function(request, response) {} // >>------------------------------------------------------>>
+  function (request, response) {} // >>------------------------------------------------------>>
   // Emitted each time there is a request
 
 
 // Alternate Syntax
 // ----------------
 var server = http.createServer();
-server.on('request', function(request, response) { ... });
+server.on('request', function (request, response) { ... });
 // This way is how you actually add event listeners in Node.js but they are both the same
 
 // You can listen to multiple events in an object or you can have multiple functions
@@ -61,7 +61,7 @@ server.on('request', function(request, response) { ... });
   function() {}
   // Emitted when the server closes.
 
-  server.on('close', function() { ... });
+  server.on('close', function () { ... });
 
 
 // -----------------------------------------------------------------------------
@@ -79,7 +79,7 @@ var chat = new EventEmitter();
 
 // Log the message to the console using console.log().
 
-chat.on('message', function(message) {
+chat.on('message', function (message) {
   console.log(message);
 });
 
@@ -95,11 +95,11 @@ var EventEmitter = events.EventEmitter;
 var chat = new EventEmitter();
 var users = [], chatlog = [];
 
-chat.on('message', function(message) {
+chat.on('message', function (message) {
   chatlog.push(message);
 });
 
-chat.on('join', function(nickname) {
+chat.on('join', function (nickname) {
   users.push(nickname);
 });
 
@@ -134,7 +134,7 @@ var server = http.createServer(/*function(request, response) {
 
 server.listen(8080);
 // Your code goes here
-server.on('request', function(request, response) {
+server.on('request', function (request, response) {
   response.writeHead(200);
   response.write("Hello, this is dog");
   response.end();
@@ -154,13 +154,13 @@ using console.log().
 var http = require('http');
 
 var server = http.createServer();
-server.on('request', function(request, response) {
+server.on('request', function (request, response) {
   response.writeHead(200);
   response.write("Hello, this is dog");
   response.end();
 });
 // -->
-server.on('request', function(request, response) {
+server.on('request', function (request, response) {
   console.log("New request coming in...");
 });
 // <--
@@ -180,18 +180,18 @@ Inside the 'close' callback, log the message "Closing down the server...".
 var http = require('http');
 var server = http.createServer();
 
-server.on('request', function(request, response) {
+server.on('request', function (request, response) {
   response.writeHead(200);
   response.write("Hello, this is dog");
   response.end();
 });
 
-server.on('request', function(request, response) {
+server.on('request', function (request, response) {
   console.log("New request coming in...");
 });
 
 // -->
-server.on('close', function() {
+server.on('close', function () {
   console.log("Closing down the server...");
 });
 // <--

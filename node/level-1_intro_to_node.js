@@ -5,7 +5,7 @@
 // // Hello Dog
 var http = require('http'); // How we require modules
 
-http.createServer(function(request, response) {
+http.createServer(function (request, response) {
   response.writeHead(200);                 // Status code in header
   response.write('Hello, this is dog.');   // Response body
   response.end();                          // Close the connection
@@ -17,7 +17,7 @@ console.log('Listening on port 8080...');
 // Simulating a long running process
 var http = require('http');
 
-http.createServer(function(request, response) { // <-- request event
+http.createServer(function (request, response) { // <-- request event
   response.writeHead(200);
   response.write("Dog is running.");
   setTimeout(function() {                       // <-- timeout event
@@ -33,7 +33,7 @@ console.log(contents);
 console.log('Doing something else');
 
 // Non-Blocking code
-fs.readFile('/etc/hosts', function(err, contents) {
+fs.readFile('/etc/hosts', function (err, contents) {
   console.log(contents);
 });
 console.log('Doing something else');
@@ -53,7 +53,7 @@ non-blocking using the readFile function instead.
 // console.log(contents);
 
 var fs = require('fs');
-fs.readFile('index.html', function(err, contents) {
+fs.readFile('index.html', function (err, contents) {
   console.log(contents);
 });
 
@@ -80,9 +80,9 @@ index.html to the response instead.
 var http = require('http');
 var fs = require('fs');
 
-http.createServer(function(request, response) {
+http.createServer(function (request, response) {
   response.writeHead(200);
-  var callback = function(err, contents) {
+  var callback = function (err, contents) {
    response.write(contents);
    response.end();
   };
@@ -113,10 +113,10 @@ status code. However, it can take additional parameters.
 var http = require('http');
 var fs = require('fs');
 
-http.createServer(function(request, response) {
+http.createServer(function (request, response) {
   response.writeHead(200, {"Content-Type": "text/html"});
 
-  fs.readFile('index.html', function(err, contents) {
+  fs.readFile('index.html', function (err, contents) {
     response.write(contents);
     response.end();
   });
@@ -143,7 +143,7 @@ send the data, and once finished add the end to the response.
 
 var http = require('http');
 
-http.createServer(function(request, response) {
+http.createServer(function (request, response) {
   response.writeHead(200);
   response.end("Hello, this is dog");
 }).listen(8080);
