@@ -8,3 +8,14 @@ $(function() {
     $('.block-list').append(list);
   }
 });
+
+$(function() {
+  $.get('/locations', appendToList);
+  function appendToList(locations) {
+    var list = [];
+    for (var i in locations) {
+      list.push($('<li>', { text: locations[i] }));
+    }
+    $('.location-list').append(list);
+  }
+})

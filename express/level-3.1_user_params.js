@@ -225,22 +225,3 @@ app.get('/cities/:name', function(request, response) {
 });
 
 app.listen(3000);
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
