@@ -1,5 +1,11 @@
 /*
- * Writing Hello World
+ * FIRST STEPS
+ * ===========
+ * 
+*/
+
+// -----------------------------------------------------------------------------
+/* Writing Hello World
  * ===================
  * 
  * Calling the express function gives us an application instance
@@ -18,9 +24,8 @@ app.listen(3000, function() {
   console.log("Listening on port %d", 3000);
 });
 
-
-/*
- * The Request and Response Objects
+// -----------------------------------------------------------------------------
+/* The Request and Response Objects
  * ================================
  * 
  * Express extends Node HTTP objects
@@ -41,9 +46,8 @@ var res = module.exports = {               //         |
   __proto__: http.ServerResponse.prototype //  <----- ↲
 };//  ↑
 
-
-/*
- * Calling Node's HTTP functions
+// -----------------------------------------------------------------------------
+/* Calling Node's HTTP functions
  * =============================
  * 
  * Because express inherits from Node, we can call Node's functions from express
@@ -59,9 +63,8 @@ app.get('/', function(request, response) {
 
 app.listen(3000);
 
-
-/*
- * Responding with JSON
+// -----------------------------------------------------------------------------
+/* Responding with JSON
  * ====================
  * 
  * The send() function converts Objects and Arrays to JSON
@@ -89,9 +92,8 @@ app.get('/', function(request, response) {
   response.json(blocks); // Same as send(), for Objects and Arrays
 });
 
-
-/*
- * Responding with HTML
+// -----------------------------------------------------------------------------
+/* Responding with HTML
  * ====================
  * 
  * The send() function converts Strings to HTML
@@ -112,9 +114,8 @@ app.get('/', function(request, response) {
  * <ul><li>Fixed</li><li>Movable</li><li>Rotating</li></ul> 
 */
 
-
-/*
- * Redirecting to Relative Path
+// -----------------------------------------------------------------------------
+/* Redirecting to Relative Path
  * ============================
  * 
  * The redirect() function sets the proper response headers
@@ -134,9 +135,8 @@ app.get('/', function(request, response) {
  * Moved Temporarily. Redirecting to /parts
 */
 
-
-/*
- * Redirecting with Custom Status: Permanent Redirect
+// -----------------------------------------------------------------------------
+/* Redirecting with Custom Status: Permanent Redirect
  * ==================================================
  * 
  * The status code can be passed as the first argument to redirect

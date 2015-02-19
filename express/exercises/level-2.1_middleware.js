@@ -44,9 +44,8 @@ app.use(express.static('public')); // 'static' the only middleware shipped with 
 
 app.listen(3000);
 
-
-/* 
- * Executing Middleware Functions
+// -----------------------------------------------------------------------------
+/* Executing Middleware Functions
  * ==============================
  *
  * When next() is called, processing moves to the next middleware
@@ -63,8 +62,8 @@ app.use(function(request, response, next) {
   next(); // <-- won't run
 });
 
-/* 
- * Reading the static Middleware source
+// -----------------------------------------------------------------------------
+/* Reading the static Middleware source
  * ====================================
  *
  * The code for static() is a good example of Express Middleware
@@ -81,8 +80,8 @@ exports = module.exports = function serveStatic(root, options) {
   }
 }
 
-/* 
- * Making AJAX calls
+// -----------------------------------------------------------------------------
+/* Making AJAX calls
  * =================
  *
  * Request to /blocks, then append results to block-list
@@ -114,9 +113,8 @@ app.get('blocks', function(request, response) {
   response.json(blocks);
 });
 
-
-/*
- * 2.4 Express Static
+// -----------------------------------------------------------------------------
+/* 2.4 Express Static
  * ==================
  * 
  * Change the code in app.js to use the express-static middleware instead of the 
@@ -142,9 +140,8 @@ app.get('/cities', function(req, res){
 
 app.listen(3001);
 
-
-/*
- * 2.5 Script Tags
+// -----------------------------------------------------------------------------
+/* 2.5 Script Tags
  * ===============
  * 
  * Now we can add some client-side JavaScript by including the jquery.js and 

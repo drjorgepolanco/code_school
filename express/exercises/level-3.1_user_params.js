@@ -5,9 +5,8 @@
  * 
 */
 
-/*
- *
- * 3.1 Reading from the URL
+// -----------------------------------------------------------------------------
+/* 3.1 Reading from the URL
  * ========================
  *
  * Limiting the number of Blocks returned
@@ -26,9 +25,8 @@ GET to /blocks?limit=1
 GET to /blocks?limit=2
 // -> ["Fixed", "Movable"]
 
-/*
- *
- * Limiting the number of Blocks returned
+// -----------------------------------------------------------------------------
+/* Limiting the number of Blocks returned
  * --------------------------------------
  * Use request.query to access query strings
  *
@@ -60,8 +58,8 @@ app.listen(3000);
  *
 */ 
 
-/*
- * Dynamic Routes
+// -----------------------------------------------------------------------------
+/* Dynamic Routes
  * ==============
  *
  * Placeholders can be used to name arguments part of the URL path
@@ -107,9 +105,8 @@ app.listen(3000);
 
 //    "Fastened securely in position"%
 
-/*
- *
- * Fixing the response for URLs not found
+// -----------------------------------------------------------------------------
+/* Fixing the response for URLs not found
  * --------------------------------------
  * The status code does not indicate an invalid URL
  *
@@ -142,10 +139,8 @@ app.get('/blocks/:name', function(request, response) {
   }
 });
 
-
-/*
- *
- * 3.2 City Seach
+// -----------------------------------------------------------------------------
+/* 3.2 City Seach
  * ==============
  *
  * We want to create an endpoint that we can use to filter cities. Follow the 
@@ -183,10 +178,8 @@ function citySearch(keyword) {
 }
 app.listen(3000);
 
-
-/*
- *
- * 3.4 City Information
+// -----------------------------------------------------------------------------
+/* 3.4 City Information
  * ====================
  *
  * Now lets look up some information about the city.

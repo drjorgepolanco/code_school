@@ -70,6 +70,10 @@ app.get('/locations/:name', function(request, response) {
   response.json(location);
 });
 
+app.delete('/blocks/:name', function(request, response) {
+  delete blocks[request.blockName];
+  response.sendStatus(200);
+});
 
 app.listen(3000, function() {
   console.log("Listening on port %d", 3000);

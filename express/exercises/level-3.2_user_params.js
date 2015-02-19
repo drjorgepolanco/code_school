@@ -5,9 +5,8 @@
  * 
 */
 
-/*
- *
- * 3.5 Massaging User Data
+// -----------------------------------------------------------------------------
+/* 3.5 Massaging User Data
  * =======================
  *
  * Normalizing the request parameter
@@ -39,9 +38,8 @@ app.get('/blocks/:name', function(request, response) {
 
 app.listen(3000);
 
-/*
- *
- * Same parameter used on multiple routes
+// -----------------------------------------------------------------------------
+/* Same parameter used on multiple routes
  * --------------------------------------
  *
  * If we wanted to use the same parameter we would need to duplicate it:
@@ -66,9 +64,8 @@ app.get('/locations/:name', function(request, response) {
   ...
 });
 
-/*
- *
- * Extracting duplication to app.param
+// -----------------------------------------------------------------------------
+/* Extracting duplication to app.param
  * -----------------------------------
  *
  * The app.param function maps placeholders to callback functions.
@@ -94,9 +91,8 @@ app.param('name', function(request, response, next) { // called for routes which
   next();
 });
 
-/*
- *
- * Accessing custom properties on request
+// -----------------------------------------------------------------------------
+/* Accessing custom properties on request
  * --------------------------------------
  *
  * We can read properties on request which were set on app.param
@@ -115,10 +111,8 @@ app.get('/locations/:name', function(request, response) {
   var location = locations[request.blockName];
 })
 
-
-/*
- *
- * Accessing the Object keys
+// -----------------------------------------------------------------------------
+/* Accessing the Object keys
  * -------------------------
  *
  * Object.keys(object)
@@ -132,10 +126,8 @@ app.get('/blocks', function(request, response) {
   response.json(Object.keys(blocks)); // <-- That way we get the names, 
 });                                   //     not the descriptions
 
-
-/*
- *
- * 3.6 Flexible Routes
+// -----------------------------------------------------------------------------
+/* 3.6 Flexible Routes
  * ===================
  *
  * Our current route only works when the city name argument matches exactly the 
@@ -181,10 +173,8 @@ function parseCityName(name) {
 
 app.listen(3000);
 
-
-/*
- *
- * 3.7 Dynamic Routes I
+// -----------------------------------------------------------------------------
+/* 3.7 Dynamic Routes I
  * ====================
  *
  * Which Express function maps placeholders to callback functions, and is commonly 
@@ -193,10 +183,8 @@ app.listen(3000);
 */
 app.param();
 
-
-/*
- *
- * 3.8 Dynamic Routes II
+// -----------------------------------------------------------------------------
+/* 3.8 Dynamic Routes II
  * =====================
  *
  * Whenever we use our name parameter we want to parse it a specific way. Let's 
@@ -248,10 +236,8 @@ function parseCityName(name) {
 
 app.listen(3000);                                                                                                                                                                                                                                                                                                            
 
-
-/*
- *
- * 3.9 Dynamic Routes III
+// -----------------------------------------------------------------------------
+/* 3.9 Dynamic Routes III
  * ======================
  *
  * The following code has a Dynamic Route that takes a year as an argument and 
@@ -309,10 +295,8 @@ app.get('/cities/year/:year', function(request, response) {
 
 app.listen(3000);
 
-
-/*
- *
- * 3.10 Dynamic Routes IV
+// -----------------------------------------------------------------------------
+/* 3.10 Dynamic Routes IV
  * ======================
  *
  * With the proper validations in place for the following code, what would the 

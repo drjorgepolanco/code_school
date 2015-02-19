@@ -20,11 +20,25 @@ $(function() {
     for (var i in blocks) {
       block = blocks[i];
       // link to each Block's description
-      content = '<a href="/blocks/' + block + '">' + block + '</a>';
+      content = '<a href="/blocks/' + block + '">' + block + '</a>' +
+                '<a href="#" data-block="' + block + '"> ✖</a>';
       list.push($('<li>', { html: content }));
       // list.push($('<li>', { text: blocks[i] }));
     }
     $('.block-list').append(list);
+
+    $('.block-list').on('click', 'a[data-block]', function(event) {
+      if (!confirm('Are you sure?')) {
+        return false;
+      }
+      var target = $(event.currentTarget);
+
+      $.ajax({
+        type: 'DELETE', url: '/blocks/' + target.data('block')
+      }).done(function() {
+        target.parents('li').remove();
+      });
+    });
   }
 });
 

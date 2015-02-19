@@ -40,7 +40,7 @@ app.use(logger);
 
 // ** Create a better logger using git: expressjs/morgan **
 
-
+// -----------------------------------------------------------------------------
 /*
  * 2.7 Logging Middleware
  * ======================
@@ -74,7 +74,7 @@ module.exports = function(request, response, next) {
   next();
 };
 
-
+// -----------------------------------------------------------------------------
 /*
  * 2.9 Only GET
  * ============
@@ -102,7 +102,7 @@ module.exports = function(request, response, next) {
   }
 };
 
-
+// -----------------------------------------------------------------------------
 /*
  * 2.10 Buildings
  * ==============
