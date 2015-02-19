@@ -1,0 +1,13 @@
+body {
+  padding: 32px;
+}
+
+img {
+  height: 128px;
+  width: 128px;
+  float: right;
+}
+
+ul li {
+  list-style: none;
+}
