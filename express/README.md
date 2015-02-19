@@ -3,6 +3,9 @@
 
 by [Carlos Souza](https://twitter.com/caike).
 
+**Exercises are [here](https://github.com/drjorgepolanco/code_school/tree/master/express/exercises).**
+
+The actual app is the rest of the content.
 
 ###1. First Steps
 
