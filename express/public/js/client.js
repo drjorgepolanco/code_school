@@ -19,11 +19,9 @@ $(function() {
     var content, block;
     for (var i in blocks) {
       block = blocks[i];
-      // link to each Block's description
       content = '<a href="/blocks/' + block + '">' + block + '</a>' +
                 '<a href="#" data-block="' + block + '"> ✖</a>';
       list.push($('<li>', { html: content }));
-      // list.push($('<li>', { text: blocks[i] }));
     }
     $('.block-list').append(list);
 
