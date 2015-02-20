@@ -171,7 +171,7 @@ var gems = [
 
 // -----------------------------------------------------------------------------
 // Displaying Currency
-// ===================
+// -------------------
 
 // index.html
 {{product.price | currency}}
@@ -179,9 +179,9 @@ var gems = [
 // 'product.price' into 'currency'
 
 
-// -----------------------------------------------------------------------------
-/* Using ng-src for Images
- * =======================
+/* -----------------------------------------------------------------------------
+ * Using ng-src for Images
+ * -----------------------
  * Using Angular Expressions inside a src attribute causes an error!
  *
  * <img src="{{product.images[0].full}}"/> ❌❌❌ WONT WORK!!! ❌❌❌
@@ -195,9 +195,125 @@ var gems = [
 
 // -----------------------------------------------------------------------------
 // Show only if array is not empty
-// ===============================
+// -------------------------------
 
 <div class="gallery" ng-show="product.images.length">
+
+
+// -----------------------------------------------------------------------------
+// Iterating through an array of related images
+// --------------------------------------------
+
+<li class="small-image pull-left thumbnail" ng-repeat="image in product.images">
+  <img ng-src="{{image}}" />
+</li>
+
+
+/* -----------------------------------------------------------------------------
+ * 2.6 Tabs Inside Out
+ * ===================
+ * 
+ * Introducing a New Directive
+ * ---------------------------
+ * Assigning a value to a tab!
+ * 
+*/
+// Display a default tab with ng-init
+<section ng-init="tab = 1">
+  <ul class="nav nav-pills">
+    <li><a href ng-click="tab = 1">Description</a></li>
+    <li><a href ng-click="tab = 1">Specifications</a></li>
+    <li><a href ng-click="tab = 1">Reviews</a></li>
+  </ul>
+</section>
+
+
+/* -----------------------------------------------------------------------------
+ * Introducing a New Directive
+ * ---------------------------
+ * Assigning a value to a tab!
+ * 
+*/
+<div class="panel" ng-show="tab === 1">
+  <h4>Description</h4>
+  <p>{{ product.description }}</p>
+</div>
+<div class="panel" ng-show="tab === 2">
+  <h4>Specifications</h4>
+  <p>None yet</p>
+</div>
+<div class="panel" ng-show="tab === 3">
+  <h4>Reviews</h4>
+  <p>None Yet</p>
+</div>
+
+/* -----------------------------------------------------------------------------
+ * The ng-class Directive
+ * ----------------------
+*/
+//                ⇙ ⇙ ⇙ display the default tab with ng-init
+<section ng-init="tab = 1">
+  <ul class="nav nav-pills">
+    <li ng-class="{ active:tab === 1 }">
+      <a href ng-click="tab = 1">Description</a>
+    </li>          // ⇙ ⇙ ⇙ name of the class to set 'active'
+    <li ng-class="{ active:tab === 2 }">
+      <a href ng-click="tab = 2">Specifications</a>
+    </li>         //           ⇙ ⇙ ⇙ expression to eval, if true, set to 'active'
+    <li ng-class="{ active:tab === 3 }">
+      <a href ng-click="tab = 3">Reviews</a>
+    </li>
+  </ul>
+  <!-- {{ tab }} -->
+</section>
+
+
+/* -----------------------------------------------------------------------------
+ * Creating our Panel Controller
+ * -----------------------------
+*/
+
+// Notice we moved our tab initializer 'ng-init'
+// Set the panel controller ⇘ ⇘ ⇘ alias -> ⇘ ⇘
+<section ng-controller="PanelController as panel">
+  <ul class="nav nav-pills">
+    <li ng-class="{ active:tab === 1 }">
+// Change the value of ng-click ⇘ ⇘ ⇘         
+      <a href ng-click="panel.selectTab(1)">Description</a>
+    </li>
+  </ul>
+  ...
+</section>
+
+
+
+/* -----------------------------------------------------------------------------
+ * 2.10 Using Gallery Controller
+ * =============================
+*/
+
+app.controller('GalleryController', function(){
+  this.current = 0;
+  this.setCurrent = function(newGallery){
+    this.current = newGallery || 0;
+  };
+});
+
+// Image Gallery
+<div class='gallery' ng-show="product.images.length" ng-controller="GalleryController as gallery">  //  ⇘ ⇘ ⇘ ⇘ ⇘ ⇘ ⇘ ⇘ ⇘ ⇘ ⇘ ⇘ ⇘ ⇘ ⇘
+  <img ng-src="{{product.images[gallery.current]}}" />
+  <ul class="list-inline thumbs">
+    <li class="thumbnail" ng-repeat="image in product.images">
+      <img ng-src="{{image}}" />
+    </li>
+  </ul>
+</div>
+
+
+
+
+
+
 
 </script>
 </body>

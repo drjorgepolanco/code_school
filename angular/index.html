@@ -4,18 +4,47 @@
   <title></title>
   <link rel="stylesheet" 
         href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+  <style type="text/css">
+    img {
+      display: block;
+      margin: 0 auto;
+    }
+  </style>
 </head>
 <body ng-controller="StoreController as store">
-  <ul class="list-group">
+  <ul class="list-group col-md-6 col-md-offset-3">
     <li class="list-group-item" ng-repeat="product in store.products">
       <h3>
         {{ product.name }}
         <em class="pull-right">{{ product.price | currency }}</em>
         <img ng-src="{{product.images[0]}}"/>
-        <!-- <li class="small-image pull-left thumbnail" ng-repeat="image in product.images" >
-          <img ng-src="{{image}}" />
-        </li> -->
       </h3>
+      <section ng-controller="PanelController as panel">
+        <ul class="nav nav-pills">
+          <li ng-class="{active: panel.isSelected(1)}">
+            <a href ng-click="panel.selectTab(1)">Description</a>
+          </li>
+          <li ng-class="{active: panel.isSelected(2)}">
+            <a href ng-click="panel.selectTab(2)">Specifications</a>
+          </li>
+          <li ng-class="{active: panel.isSelected(3)}">
+            <a href ng-click="panel.selectTab(3)">Reviews</a>
+          </li>
+        </ul>
+        <div class="panel" ng-show="panel.isSelected(1)">
+          <h4>Description</h4>
+          <blockquote>{{ product.description }}</blockquote>
+        </div>
+        <div class="panel" ng-show="panel.isSelected(2)">
+          <h4>Specifications</h4>
+          <blockquote>Shine: {{ product.shine }}</blockquote>
+          <blockquote>Rarity: {{ product.rarity }}</blockquote>
+        </div>
+        <div class="panel" ng-show="panel.isSelected(3)">
+          <h4>Reviews</h4>
+          <blockquote>None Yet</blockquote>
+        </div>
+      </section>
     </li>
   </ul>
 
