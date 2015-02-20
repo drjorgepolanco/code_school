@@ -5,16 +5,31 @@
   <link rel="stylesheet" 
         href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
 </head>
-<body>
-  <div class="row">
+<body ng-controller="StoreController as store">
+  <ul class="list-group">
+    <li class="list-group-item" ng-repeat="product in store.products">
+      <h3>
+        {{ product.name }}
+        <em class="pull-right">{{ product.price | currency }}</em>
+        <img ng-src="{{product.images[0]}}"/>
+        <!-- <li class="small-image pull-left thumbnail" ng-repeat="image in product.images" >
+          <img ng-src="{{image}}" />
+        </li> -->
+      </h3>
+    </li>
+  </ul>
+
+
+<!--   <div class="row">
     <div class="col-md-6 col-md-offset-3">
-      <div ng-controller="StoreController as store">
-        <h1>{{store.product.name}}</h1>
-        <em class="pull-right">${{store.product.price}}</em>
-        <p>{{store.product.description}}</p>
+      <div ng-repeat="product in store.products">
+        <h1>{{product.name}}</h1>
+        <h2><em class="pull-right">${{product.price}}</em></h2>
+        <p>{{product.description}}</p>
+        <button ng-show="product.canPurchase">Add to Cart</button>
       </div>
     </div>
-  </div>
+  </div> -->
 
 
   <script src="js/angular.js"></script>

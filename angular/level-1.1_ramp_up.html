@@ -70,7 +70,8 @@ var app = angular.module('store', [ ]);
   var gem = {
     name: 'Dodecahedron',
     price: 2.95,
-    description: '. . .'
+    description: '. . .',
+    canPurchase: false // <-- included on 'Adding a Button'
   }
 })();
 
@@ -85,9 +86,118 @@ var app = angular.module('store', [ ]);
   <h1>{{store.product.name}}</h1>
   <h2>${{store.product.price}}</h2>
   <p>{{store.product.description}}</p>
+  // <button> included on 'Adding a Button'. we only want to show this if we can 
+  //          buy it, in other words if canPurchase is true
+  <button ng-show="store.product.canPurchase">Add to Cart</button> 
 </div>
 
 
+// -----------------------------------------------------------------------------
+/* Built-in Directives
+ * ===================
+ *
+ * Adding a Button
+ * ---------------
+ *
+*/
+// app.js
+var gem = {
+  name: 'Dodecahedron',
+  price: 2.95,
+  description: '. . .',
+  canPurchase: false // <-- included on 'Adding a Button'
+}
+
+// index.html
+<button ng-show="store.product.canPurchase">Add to Cart</button> 
+
+
+// -----------------------------------------------------------------------------
+/* Multiple Products
+ * =================
+*/
+
+// app.js
+var gems = [
+  {
+    name: 'Dodecahedron',
+    price: 2.95,
+    description: '...',
+    canPurchase: true
+  },
+  {
+    name: 'Pentagonal Gem',
+    price: 5.95,
+    description: '...',
+    canPurchase: false
+  }
+];
+
+// index.html (non-dynamic)
+<button ng-show="store.products[0].canPurchase"></button>
+
+// (dynamic)
+<div ng-repeat="product in store.products"></div>
+
+
+// -----------------------------------------------------------------------------
+/* Formatting with Filters
+ * =======================
+ *
+ * {{ data | filter:options }}
+*/
+// Date
+// ----
+{{ '1388123412323' | date: 'MM/dd/yyyy @ h:mma' }} -> 12/27/2013 @ 12:50AM
+
+
+// Uppercase or Lowercase
+// ---------------------- 
+{{ 'octagon gem' | uppercase }} -> OCTAGON GEM
+
+
+// limitTo
+// -------
+{{ 'My Description ' | limitTo:8 }} -> My Descr
+// It's useful to limit also the number of items in an array
+<li ng-repeat="product in store.products | limitTo:3"></li>
+
+
+// orderBy
+// -------> Will list products by descending price ⇘ ⇘ ⇘ ⇘
+<li ng-repeat="product in store.products | orderBy:'-price'">
+// Without the '-' list products by ascending price
+
+
+// -----------------------------------------------------------------------------
+// Displaying Currency
+// ===================
+
+// index.html
+{{product.price | currency}}
+// take the result of the first expression and take the output into the second one
+// 'product.price' into 'currency'
+
+
+// -----------------------------------------------------------------------------
+/* Using ng-src for Images
+ * =======================
+ * Using Angular Expressions inside a src attribute causes an error!
+ *
+ * <img src="{{product.images[0].full}}"/> ❌❌❌ WONT WORK!!! ❌❌❌
+ *
+ * The browser tries to load the image before the Expression evaluates
+*/
+
+// We need the ng-src directive ✅
+<img ng-src="{{product.images[0].full}}"/>
+
+
+// -----------------------------------------------------------------------------
+// Show only if array is not empty
+// ===============================
+
+<div class="gallery" ng-show="product.images.length">
 
 </script>
 </body>
