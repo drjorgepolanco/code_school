@@ -1,0 +1,94 @@
+<!doctype HTML>
+<html ng-app="store"> <!-- a 'directive' runs the module 'store' 
+                           in app.js when doc loads -->
+<head>
+  <title></title>
+</head>
+
+<body ng-controller="StoreController"> <!-- a 'directive' that binds to the
+                                            function with same name -->
+<script>
+  function StoreController() {
+    alert('Welcome, Jorge!');
+  }
+
+/*
+ * Directives
+ * ==========
+ *
+ * - Is a marker on a HTML tag that tells angular to run or reference
+ *   some JavaScript code
+ *
+*/
+
+
+/*
+ * Modules
+ * =======
+ *
+ * - Where we write pieces of our Angular app.
+ * - Makes our code maintainable, testable, readable.
+ * - Where we define dependencies.
+ * - Modules can use other modules!
+ *
+*/
+// app.js
+var app = angular.module('store', [ ]);
+//        -------        -------  --- 
+//      Angular.js      App Name  Dependencies
+
+
+/*
+ * Expressions
+ * ===========
+ *
+ * - Allow you to insert dynamic values in your HTML
+ *
+ * Numerical Operations
+ * <p>I am {{4 + 6}}</p>       --> <p>I am 10</p>
+ *
+ * String Operations
+ * <p>{{"Hello" + " you"}}</p> --> <p>Hello you</p>
+ *
+*/
+
+
+/*
+ * Controllers
+ * ===========
+ *
+ * - Is where we define our apps behavior by defining functions and values.
+ *
+*/
+// Wrapping your JavaScript in a closure is a good habit
+(function() {
+  var app = angular.module('store', []);
+  // Storing Data inside the controller
+  app.controller('StoreController', function() {
+    this.product = gem; // product is a property of our controller
+  });
+  var gem = {
+    name: 'Dodecahedron',
+    price: 2.95,
+    description: '. . .'
+  }
+})();
+
+// How do we print this data inside our webpage?
+
+// Displaying our first product
+// ----------------------------
+
+//     directive    controller name    alias
+//   -------------  ---------------    -----
+<div ng-controller="StoreController as store">
+  <h1>{{store.product.name}}</h1>
+  <h2>${{store.product.price}}</h2>
+  <p>{{store.product.description}}</p>
+</div>
+
+
+
+</script>
+</body>
+</html> 
