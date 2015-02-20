@@ -64,17 +64,22 @@
     };
   });
 
-  // app.controller('GalleryController', function() {
-  //   this.current = 0;
-    
-  //   this.setCurrent = function(newCurrent) {
-  //     if (newCurrent === null) {
-  //       this.current = 0;
-  //     } else {
-  //       this.current = newCurrent;
-  //     }
-  //   };
-  // });
+  app.controller('ReviewController', function() {
+    this.review = {};
+
+    this.addReview = function(product) {
+      this.review.createdOn = Date.now();
+      product.reviews.push(this.review);
+      this.review = {};
+    };
+  });
+
+  app.controller('GalleryController', function(){
+    this.current = 0;
+    this.setCurrent = function(newGallery){
+      this.current = newGallery || 0;
+    };
+  });
 
   var gems = [{
       name: 'Azurite',
@@ -85,7 +90,7 @@
       color: '#CCC',
       faces: 14,
       images: [
-        "images/azurite.gif",
+        "images/gem-02.gif",
         "images/gem-05.gif",
         "images/gem-09.gif"
       ],
@@ -109,9 +114,9 @@
       color: '#EEE',
       faces: 12,
       images: [
-        "images/Bloodstone.gif",
+        "images/gem-01.gif",
         "images/gem-03.gif",
-        "images/gem-04.gif"
+        "images/gem-04.gif",
       ],
       reviews: [{
         stars: 3,
@@ -133,9 +138,9 @@
       color: '#000',
       faces: 6,
       images: [
-        "images/zircon.gif",
+        "images/gem-06.gif",
         "images/gem-07.gif",
-        "images/gem-10.gif"
+        "images/gem-08.gif"
       ],
       reviews: [{
         stars: 1,

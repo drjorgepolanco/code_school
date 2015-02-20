@@ -1,0 +1,97 @@
+<!doctype HTML>
+<html ng-app="store">
+<head>
+  <title></title>
+</head>
+
+<body ng-controller="StoreController">
+  <li class="list-group-item" ng-show="panel.isSelected(3)">
+    <h4>Reviews</h4>
+    <!-- Looping Over Reviews in our Tab -->
+    <blockquote ng-repeat="review in product.reviews">
+      <b>Stars: {{ reviewCtrl.review.stars }}</b>
+      {{ reviewCtrl.review.body }}
+      <cite>by: {{ reviewCtrl.review.author }}</cite>
+    </blockquote>
+
+    <!-- Writing out our Review Form -->
+    <form name="reviewForm" 
+          ng-controller="ReviewController as reviewCtrl"
+          ng-submit="reviewForm.$valid && reviewCtrl.addReview(product)" 
+          novalidate><!-- ⇖ ⇖ if form is not valid, reviewCtrl will 
+          <!-- *1             never be called -->
+        <!-- ↑↑↑↑ turn of HTML validations -->
+      <select ng-model="reviewCtrl.review.stars" required>   
+        <option value="1">1</option>          <!-- ↑↑↑↑ required fields -->
+        <option value="2">2</option>
+        <option value="3">3</option>
+        <option value="4">4</option>
+        <option value="5">5</option>
+      </select>
+      <textarea ng-model="reviewCtrl.review.body" required></textarea>
+      <label>by:</label>
+      <input ng-model="reviewCtrl.review.author" type="email" required>
+      <div>reviewForm is {{ reviewForm.$valid }}</div> <!-- Print Forms Validity -->
+                                <!-- ↑ $ ↑ means we are referencing a property on the form -->
+      <input type="submit" value="Submit">
+    </form>
+  </li>
+
+<script>
+
+/*\-----------------------------------------------------------------------------
+ * FORMS MODELS AND VALIDATIONS
+ * ============================
+\*/
+
+// More Binding Examples
+// ---------------------
+
+// With a checkbox
+<input ng-model="review.terms" type="checkbox"> I agree to the terms
+// Sets the value to true or false
+
+// With Radio Buttons
+<input ng-model="review.color" type="radio" value="red"> Red
+<input ng-model="review.color" type="radio" value="blue"> Blue
+<input ng-model="review.color" type="radio" value="green"> Green
+
+
+/*\-----------------------------------------------------------------------------
+ * Creating the Review Controller
+ * ------------------------------
+\*/
+
+app.controller('ReviewController', function() {
+  this.review = {};
+  // Using ng-submit to make the Form Work (See *1)
+  this.addReview = function(product) {
+    product.reviews.push(this.review);
+    // clear the forms
+    this.review = {};
+  };
+});
+
+
+/*\-----------------------------------------------------------------------------
+ * HTML5-based type validations
+ * ----------------------------
+ *
+ * Web forms usually have rules around valid input:
+ * - Angular JS has built-in validations for common input types:
+\*/
+
+<input type="email" name="email">
+
+<input type="url" name="homepage">
+
+<input type="number" name="quantity">      min=1 max=10
+// Can also define min and max with numbers
+
+
+
+
+
+</script>
+</body>
+</html> 
