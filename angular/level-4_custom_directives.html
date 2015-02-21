@@ -1,0 +1,88 @@
+<!doctype HTML>
+<html ng-app="store">
+<head>
+  <title></title>
+</head>
+
+<body ng-controller="StoreController">
+  <ul class="list-group">
+    <li class="list-group-item" ng-repeat="product in store.products">
+                  <!-- ⇓ ⇓ ⇓ ⇓ ⇓ ⇓ ⇓ ⇓ ⇓ -->
+      <h3 ng-include="'product-title.html'"></h3>
+                  <!-- ⇑ ⇑ ⇑ ⇑ ⇑ ⇑ ⇑ ⇑ ⇑ -->
+      <!-- ng-include is expecting a variable with the name of the file to include
+           To pass the name directly as a string, use single quotes (' . . . ')    -->
+      <section ng-controller="PanelController as panel"></section>
+    </li>
+  </ul>
+
+  <!-- Using ng-include for Templates -->
+  <!-- ============================== -->
+  
+  <!-- ⇓ ⇓ ⇓ ⇓ ⇓ ⇓ ⇓ ⇓ ⇓  -->
+  <!-- product-title.html -->
+  <!-- ⇑ ⇑ ⇑ ⇑ ⇑ ⇑ ⇑ ⇑ ⇑  -->
+  {{product.name}}
+  <em class="pull-right">{{product.price}}</em>
+
+
+<script>
+
+/*\-----------------------------------------------------------------------------
+ * CUSTOM DIRECTIVES 
+ * =================
+ *
+ * Creating a Directive with an Associated Controller
+ *
+ * Why Directives?
+ * ---------------
+ * Directives allow you to write HTML that expresses the behavior of your application.
+ *
+ * Writing Custom Directives
+ * -------------------------
+ * Template-expanding Directives are the simplest:
+ * - Define a custom tag or attribute that is expanded or replaced
+ * - can include Controller logic, if needed
+ *
+ * Directives can also be used for:
+ * - Expressing complex UI
+ * - Calling events and registering event handlers
+ * - Reusing common components
+ *
+ * Element Directive: good for UI widgets
+ * <product-title></product-title>
+ *
+ * Attribute Directive: good for mixin behaviors... like a tooltip.
+ * <h3 product-title></h3>
+\*/
+
+// product-title.html
+{{product.name}}
+<em class="pull-right">{{product.price}}</em>
+
+// index.html
+<h3><product-title></product-title></h3>
+
+// Element Directive
+// -----------------
+// app.js
+app.directive('productTitle', function() {
+  return {
+    restrict: 'E', // Type of Directive (E for Element)
+    templateUrl: 'product-title.html'
+  };
+});
+
+// Attribute Directive
+// -------------------
+// app.js
+app.directive('productTitle', function() {
+  return {
+    restrict: 'A', // Type of Directive (A for Attribute)
+    templateUrl: 'product-title.html'
+  };
+});
+
+</script>
+</body>
+</html> 

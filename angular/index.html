@@ -1,35 +1,12 @@
 <!doctype HTML>
 <html ng-app="gemStore">
 <head>
-  <title></title>
+  <title>Flatlander Angular</title>
   <link rel="stylesheet" 
         href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
-  <style type="text/css">
-    img {
-      display: block;
-      margin: 0 auto;
-    }
-    .img-thumbnails {
-      margin-top: 16px; 
-      margin: 0 auto;
-      float: right;
-    }
-    .thumbnail {
-      margin: 16px;
-    }
-    .small-gem {
-      width: 64px;
-      height: 64px; 
-    }
-    .ng-invalid.ng-dirty {
-      border-color: #FA787E;
-    }
-    .ng-valid.ng-dirty {
-      border-color: #78FA89;
-    }
-
-  </style>
+  <link rel="stylesheet" href="css/style.css">
 </head>
+
 <body ng-controller="StoreController as store">
   <header>
     <h1 class="text-center">Flatlander Crafted Gems</h1>
@@ -38,106 +15,9 @@
   <ul class="list-group col-md-6 col-md-offset-3">
     <li class="list-group-item" 
         ng-repeat="product in store.products">
-      <h3>
-        {{ product.name }}
-        <em class="pull-right">{{ product.price | currency }}</em>
-        <!-- <img ng-src="{{product.images[0]}}"/> -->
-      </h3>
-      <div ng-controller="GalleryController as gallery" 
-           ng-show="product.images.length">
-        <div class="img-wrap">
-          <img ng-src="{{ product.images[gallery.current] }}" />
-        </div>
-        <div class="col-md-12">
-          <ul class="img-thumbnails clearfix">
-            <li class="small-image pull-left thumbnail" 
-                ng-repeat="image in product.images">
-              <img class="small-gem" 
-                   ng-src="{{ image }}" />
-            </li>
-          </ul>
-        </div>
-      </div>
-      <section ng-controller="PanelController as panel">
-        <ul class="nav nav-pills">
-          <li ng-class="{active: panel.isSelected(1)}">
-            <a href ng-click="panel.selectTab(1)">Description</a>
-          </li>
-          <li ng-class="{active: panel.isSelected(2)}">
-            <a href ng-click="panel.selectTab(2)">Specifications</a>
-          </li>
-          <li ng-class="{active: panel.isSelected(3)}">
-            <a href ng-click="panel.selectTab(3)">Reviews</a>
-          </li>
-        </ul>
-        <div class="panel" 
-             ng-show="panel.isSelected(1)">
-          <h4>Description</h4>
-          <blockquote>{{ product.description }}</blockquote>
-        </div>
-        <div class="panel" 
-             ng-show="panel.isSelected(2)">
-          <h4>Specifications</h4>
-          <blockquote>Shine: {{ product.shine }}</blockquote>
-          <blockquote>Rarity: {{ product.rarity }}</blockquote>
-        </div>
-        <div class="panel" 
-             ng-show="panel.isSelected(3)">
-          <li class="list-group-item">
-            <h4>Reviews</h4>
-            <blockquote ng-repeat="review in product.reviews">
-              <b>{{ review.stars }} Stars</b>
-              {{ review.body }}
-              <br>
-              <cite>- {{ review.author }} on {{review.createdOn | date: 'MM/dd/yyyy @ h:mma' }}</cite>
-            </blockquote>
-            <form name="reviewForm" 
-                  ng-controller="ReviewController as reviewCtrl"
-                  ng-submit="reviewForm.$valid && reviewCtrl.addReview(product)" 
-                  novalidate>
-              <div class="form-group">
-                <blockquote>
-                  <b>{{ reviewCtrl.review.stars }} Stars</b>
-                  {{ reviewCtrl.review.body }}
-                  <br>
-                  <cite>- {{ reviewCtrl.review.author }} on {{review.createdOn | date: 'MM/dd/yyyy @ h:mma' }}</cite>
-                </blockquote>
-              </div>              
-              <div class="form-group">
-                <select ng-model="reviewCtrl.review.stars" 
-                        class="form-control" 
-                        required>
-                  <option value="">Rate the Product</option>
-                  <option value="1">1</option>
-                  <option value="2">2</option>
-                  <option value="3">3</option>
-                  <option value="4">4</option>
-                  <option value="5">5</option>
-                </select>
-              </div>
-              <div class="form-group">
-                <textarea ng-model="reviewCtrl.review.body" 
-                          placeholder="Write a short review"
-                          class="form-control" 
-                          required>
-                </textarea>
-              </div>
-              <div class="form-group">
-                <label>by:</label>
-                <input ng-model="reviewCtrl.review.author" 
-                       type="email"
-                       class="form-control"
-                       placeholder="Enter your email..."
-                       required>
-              </div>
-              <div>reviewForm is {{ reviewForm.$valid }}</div>
-              <button type="submit" 
-                      class="btn btn-primary btn-lg btn-block">Submit
-              </button>
-            </form>
-          </li>
-        </div>
-      </section>
+      <h3><product-title></product-title></h3>
+      <product-gallery></product-gallery>
+      <product-panels></product-panels>
     </li>
   </ul>
 

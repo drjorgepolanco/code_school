@@ -1,67 +1,12 @@
-// (function() {
-  
-//   var app = angular.module('gemStore', []);
-  
-//   app.controller('StoreController', function() {
-//     this.products = gems;
-//   });
-
-//   var gems = [
-//     {
-//       name: 'Dodecahedron',
-//       price: 2,
-//       description: "Saul, Saul... this man that we spoke of before, this... this" + 
-//                    "person that you said could... could disappear me, get me a "  +
-//                    "whole new life and make sure that I'm never found. Yeah I "   + 
-//                    "need him, Saul. Gus is gonna murder my whole family. I need " + 
-//                    "this man now. Saul... now, Saul!",
-//       canPurchase: true,
-//       soldOut: false,
-//       images: [
-//         {
-//           full: 'images/gem-1.jpeg',
-//           thumb: 'images/gem-2.jpeg'
-//         }
-//       ]
-//     },
-//     {
-//       name: 'Pentagonal Gem',
-//       price: 5.95,
-//       description: "Anything suspicious? Well... then should we go? Any uh... "       + 
-//                    "Cartel news these days? Seems like I'm always reading something"  + 
-//                    " or other in the paper. I don't want to talk about it. To you or" + 
-//                    " anyone else. I'm done explaining myself. Gus is dead. We've got" + 
-//                    " work to do.",
-//       canPurchase: true,
-//       soldOut: false,
-//       images: [
-//         {
-//           full: 'images/gem-3.jpeg',
-//           thumb: 'images/gem-4.jpeg'
-//         }
-//       ]
-//     }
-//   ];
-
-// })();
-
 (function() {
+
   var app = angular.module('gemStore', []);
+
+
+  /* CONTROLLERS */
 
   app.controller('StoreController', function() {
     this.products = gems;
-  });
-
-  app.controller('PanelController', function() {
-    this.tab = 1;
-
-    this.selectTab = function(setTab) {
-      this.tab = setTab;
-    };
-
-    this.isSelected = function(checkTab) {
-      return this.tab === checkTab;
-    };
   });
 
   app.controller('ReviewController', function() {
@@ -74,12 +19,51 @@
     };
   });
 
-  app.controller('GalleryController', function(){
-    this.current = 0;
-    this.setCurrent = function(newGallery){
-      this.current = newGallery || 0;
+
+  /* DIRECTIVES */
+
+  app.directive('productGallery', function() {
+    return {
+      restrict: 'E',
+      templateUrl: 'product-gallery.html',
+      controller: function() {
+        this.current = 0;
+        this.setCurrent = function(newGallery) {
+          this.current = newGallery || 0;
+        };
+      },
+      controllerAs: 'gallery'
     };
   });
+
+  app.directive('productTitle', function() {
+    return {
+      restrict: 'E', // Type of Directive (E for Element)
+      templateUrl: 'product-title.html'
+    };
+  });
+
+  app.directive('productPanels', function() {
+    return {
+      restrict: 'E', // Type of Directive (E for Element)
+      templateUrl: 'product-panels.html',
+      controller: function() {
+        this.tab = 1;
+
+        this.selectTab = function(setTab) {
+          this.tab = setTab;
+        };
+
+        this.isSelected = function(checkTab) {
+          return this.tab === checkTab;
+        };
+      },
+      controllerAs: 'panels'
+    };
+  });
+
+
+  /* GEMS OBJECT */
 
   var gems = [{
       name: 'Azurite',
@@ -116,7 +100,7 @@
       images: [
         "images/gem-01.gif",
         "images/gem-03.gif",
-        "images/gem-04.gif",
+        "images/gem-04.gif"
       ],
       reviews: [{
         stars: 3,

@@ -1,0 +1,22 @@
+img {
+  display: block;
+  margin: 0 auto;
+}
+.img-thumbnails {
+  margin-top: 16px; 
+  margin: 0 auto;
+  float: right;
+}
+.thumbnail {
+  margin: 16px;
+}
+.small-gem {
+  width: 64px;
+  height: 64px; 
+}
+.ng-invalid.ng-dirty {
+  border-color: #FA787E;
+}
+.ng-valid.ng-dirty {
+  border-color: #78FA89;
+}
